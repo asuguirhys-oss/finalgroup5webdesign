@@ -404,16 +404,20 @@
       <h2>🎯 Test Your Boolean Brain</h2>
       <p>Enter a Boolean expression below (e.g., <code>Cake AND Ice Cream</code>):</p>
       <input type="text" id="userInput" placeholder="Type your Boolean expression..." />
-      <button onclick="checkBoolean()">Check</button>
+ <button type="button" onclick="checkBoolean()">Check</button>
+
       <p class="result" id="result"></p>
 
       <section class="card" id="visualizer">
         <h2>🧠 Boolean Visualizer</h2>
         <p>Click a button below to see how each Boolean operator works visually:</p>
         <div style="margin: 15px 0;">
-          <button onclick="showVenn('AND')">AND</button>
-          <button onclick="showVenn('OR')">OR</button>
-          <button onclick="showVenn('NOT')">NOT</button>
+<!-- Boolean Brain --
+<!-- Boolean Visualizer buttons -->
+<button type="button" onclick="showVenn('AND')">AND</button>
+<button type="button" onclick="showVenn('OR')">OR</button>
+<button type="button" onclick="showVenn('NOT')">NOT</button>
+
         </div>
         <div class="venn-container">
           <div class="circle a">A</div>
@@ -466,8 +470,11 @@ function showVenn(operator) {
     b.style.backgroundColor = "#ddd";
     label.textContent = "NOT: Only A is included. B is excluded.";
   }
-  document.getElementById("vennDiagram").style.display = "block";
+
+  // FIX: change "vennDiagram" to your real ID "visualizer"
+  document.getElementById("visualizer").style.display = "block";
 }
+
 
 function spawnCookie() {
   const cookie = document.createElement('div');
@@ -488,3 +495,4 @@ setInterval(spawnCookie, 500);
   </script>
 </body>
 </html>
+
