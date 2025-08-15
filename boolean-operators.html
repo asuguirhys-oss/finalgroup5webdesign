@@ -427,14 +427,18 @@
   </footer>
 
   <script>
-    function checkBoolean() {
-      const input = document.getElementById("userInput").value.toUpperCase().trim();
-      const result = document.getElementById("result");
-      if (!input) {
-        result.textContent = "Please enter a Boolean expression.";
-        result.style.color = "red";
-        return;
-      }
+function checkBoolean() {
+  const input = document.getElementById("userInput").value.trim();
+  if (!input) {
+    alert("Please enter a Boolean expression.");
+    return;
+  }
+  // Encode the search to be URL-safe
+  const query = encodeURIComponent(input);
+  // Open Google search in a new tab
+  window.open(`https://www.google.com/search?q=${query}`, "_blank");
+}
+
 
       if (input.includes("AND")) {
         result.textContent = "Your expression contains the AND operator!";
@@ -514,3 +518,4 @@ setInterval(spawnCookie, 500);
   </script>
 </body>
 </html>
+
