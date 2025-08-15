@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Boolean Operators | Cookie Academy 🍪</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cookie-orange: #d2691e;
+      --cookie-light: #fff8f2;
+      --cookie-cream: #fff2e5;
+      --cookie-text: #3d2b1f;
+      --highlight: #ffbb88;
+      --cookie-bg: url('https://www.transparenttextures.com/patterns/cookies.png');
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background-color: var(--cookie-light);
+      background-image: var(--cookie-bg);
+      background-size: 150px;
+      color: var(--cookie-text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: var(--cookie-orange);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #b15514;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--highlight);
+    }
+
+    .main-content {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .intro.card {
+      text-align: center;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 25px 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.015);
+    }
+
+    .card h2 {
+      color: var(--cookie-orange);
+      margin-bottom: 10px;
+    }
+
+    .example {
+      background-color: #fff0e0;
+      padding: 10px;
+      border-left: 5px solid var(--cookie-orange);
+      margin-top: 15px;
+      font-family: monospace;
+    }
+
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: help;
+    }
+
+    .tooltip .tooltip-text {
+      visibility: hidden;
+      width: 220px;
+      background-color: #5a4033;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 10px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      font-size: 14px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .quiz {
+      margin-top: 40px;
+      background-color: var(--cookie-cream);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .quiz input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    .quiz button {
+      margin-top: 15px;
+      background-color: var(--cookie-orange);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .quiz button:hover {
+      background-color: #b15514;
+    }
+
+    .result {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    /* New styled buttons for AND, OR, NOT */
+    .bool-buttons {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .bool-button {
+      background-color: #fff8f2;
+      border: 2px solid var(--cookie-orange);
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-weight: 700;
+      color: var(--cookie-orange);
+      cursor: pointer;
+      box-shadow: 2px 2px 6px rgba(210, 105, 30, 0.4);
+      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 16px;
+    }
+
+    .bool-button:hover {
+      background-color: var(--cookie-orange);
+      color: var(--cookie-light);
+      box-shadow: 4px 4px 12px rgba(210, 105, 30, 0.7);
+    }
+
+    /* Venn Diagram container */
+    #vennDiagram {
+      margin-top: 30px;
+      padding: 20px;
+      border: 2px solid var(--cookie-orange);
+      border-radius: 12px;
+      background: var(--cookie-cream);
+      text-align: center;
+      display: none;
+      box-shadow: 0 4px 10px rgba(210, 105, 30, 0.2);
+    }
+
+    #vennDiagram h3 {
+      color: var(--cookie-orange);
+      margin-bottom: 12px;
+      font-weight: 700;
+      font-size: 24px;
+    }
+
+    #vennDiagram p {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    #vennDiagram img {
+      max-width: 280px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(210, 105, 30, 0.4);
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #ffe8d4;
+      font-size: 14px;
+      color: #5a4033;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 15px;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .venn-container {
+  position: relative;
+  width: 280px;
+  height: 180px;
+  margin: 0 auto;
+}
+
+.circle {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #ffcba4;
+  opacity: 0.4;
+  top: 15px;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  box-shadow: 0 0 10px rgba(210, 105, 30, 0.3);
+}
+
+.circle.a {
+  left: 30px;
+}
+
+.circle.b {
+  left: 120px;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>🍪 Boolean Operators</h1>
+    <p>Search smarter. Filter faster. The Cookie Way™.</p>
+  </header>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="#intro">Introduction</a>
+    <a href="#and">AND</a>
+    <a href="#or">OR</a>
+    <a href="#not">NOT</a>
+    <a href="#quiz">Practice</a>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Intro -->
+    <section class="intro card" id="intro">
+      <h2>What Are Boolean Operators?</h2>
+      <p>Boolean operators are simple words (<strong>AND</strong>, <strong>OR</strong>, <strong>NOT</strong>) that help refine search results. They were introduced by <strong>George Boole</strong> and are essential in logic, computer science, and online searching.</p>
+    </section>
+
+    <!-- Boolean Operators -->
+    <div class="card-grid">
+      <div class="card" id="and">
+        <h2>AND Operator</h2>
+        <p>
+          <span class="tooltip">
+            <strong>AND</strong>
+            <span class="tooltip-text">Returns results that contain both terms.</span>
+          </span> narrows your search. Only results that include <em>both terms</em> will show.
+        </p>
+        <div class="example">Example: <code>Cookies AND Brownies</code></div>
+      </div>
+
+      <div class="card" id="or">
+        <h2>OR Operator</h2>
+        <p>
+          <span class="tooltip">
+            <strong>OR</strong>
+            <span class="tooltip-text">Returns results that contain either term.</span>
+          </span> broadens your search. Results can include <em>either</em> term.
+        </p>
+        <div class="example">Example: <code>Cookies OR Brownies</code></div>
+      </div>
+
+      <div class="card" id="not">
+        <h2>NOT Operator</h2>
+        <p>
+          <span class="tooltip">
+            <strong>NOT</strong>
+            <span class="tooltip-text">Excludes the second term from the results.</span>
+          </span> excludes a term. Results will contain the first term but not the second.
+        </p>
+        <div class="example">Example: <code>Cookies NOT Brownies</code></div>
+      </div>
+    </div>
+
+    <!-- Quiz -->
+    <section class="quiz card" id="quiz">
+      <h2>🎯 Test Your Boolean Brain</h2>
+      <p>Enter a Boolean expression below (e.g., <code>Cake AND Ice Cream</code>):</p>
+      <input type="text" id="userInput" placeholder="Type your Boolean expression..." />
+      <button onclick="checkBoolean()">Check</button>
+      <p class="result" id="result"></p>
+
+      <section class="card" id="visualizer">
+        <h2>🧠 Boolean Visualizer</h2>
+        <p>Click a button below to see how each Boolean operator works visually:</p>
+        <div style="margin: 15px 0;">
+          <button onclick="showVenn('AND')">AND</button>
+          <button onclick="showVenn('OR')">OR</button>
+          <button onclick="showVenn('NOT')">NOT</button>
+        </div>
+        <div class="venn-container">
+          <div class="circle a">A</div>
+          <div class="circle b">B</div>
+          <div class="venn-label" id="venn-label">Select an operator</div>
+        </div>
+      </section>
+
+  <footer>
+    Made with 🍪 at Cookie Academy™
+  </footer>
+
+  <script>
+    function checkBoolean() {
+      const input = document.getElementById("userInput").value.toUpperCase().trim();
+      const result = document.getElementById("result");
+      if (!input) {
+        result.textContent = "Please enter a Boolean expression.";
+        result.style.color = "red";
+        return;
+      }
+
+      if (input.includes("AND")) {
+        result.textContent = "Your expression contains the AND operator!";
+        result.style.color = "green";
+      } else if (input.includes("OR")) {
+        result.textContent = "Your expression contains the OR operator!";
+        result.style.color = "green";
+      } else if (input.includes("NOT")) {
+        result.textContent = "Your expression contains the NOT operator!";
+        result.style.color = "green";
+      } else {
+        result.textContent = "No Boolean operators detected. Try using AND, OR, or NOT.";
+        result.style.color = "orange";
+      }
+    }
+    function showVenn(operator) {
+  const a = document.querySelector('.circle.a');
+  const b = document.querySelector('.circle.b');
+  const label = document.getElementById('venn-label');
+
+  // Reset both circles to base state
+  a.style.opacity = "0.4";
+  b.style.opacity = "0.4";
+  a.style.backgroundColor = "#ffcba4";
+  b.style.backgroundColor = "#ffcba4";
+
+  if (operator === 'AND') {
+    a.style.opacity = "1";
+    b.style.opacity = "1";
+    a.style.backgroundColor = "#ff9966";
+    b.style.backgroundColor = "#ff9966";
+    label.textContent = "AND: Only overlapping part is included.";
+  } else if (operator === 'OR') {
+    a.style.opacity = "0.8";
+    b.style.opacity = "0.8";
+    a.style.backgroundColor = "#ffa366";
+    b.style.backgroundColor = "#ffa366";
+    label.textContent = "OR: All of both A and B are included.";
+  } else if (operator === 'NOT') {
+    a.style.opacity = "1";
+    b.style.opacity = "0.2";
+    a.style.backgroundColor = "#ff9966";
+    b.style.backgroundColor = "#ddd";
+    label.textContent = "NOT: Only A is included. B is excluded.";
+  }
+  // Make vennDiagram visible if hidden
+  document.getElementById("vennDiagram").style.display = "block";
+}
+
+  </script>
+  </script>
+</body>
+</html>
+a

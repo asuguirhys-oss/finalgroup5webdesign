@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Web Design Basics | Cookie Academy 🍪</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --cookie-orange:#d2691e;
+  --cookie-cream:#fff2e5;
+  --cookie-light:#fff8f2;
+  --cookie-text:#3d2b1f;
+  --accent:#b15514;
+  --green:#2e7d32;
+  --red:#c62828;
+  --surface:#ffffff;
+  --shadow: 0 6px 16px rgba(0,0,0,.06);
+}
+[data-theme="dark"]{
+  --cookie-light:#2a1e17;
+  --cookie-cream:#3a2a20;
+  --cookie-text:#f5e9e0;
+  --surface:#2b221b;
+  --shadow: 0 6px 16px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Fredoka',sans-serif;
+  background-image:url(https://www.shutterstock.com/image-vector/chocolate-chip-cookies-doodle-seamless-600nw-2279158739.jpg);
+  background-color:rgba(255,255,255,0.6);
+  background-blend-mode:lighten;
+  color:var(--cookie-text);
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  overflow-x:hidden;
+}
+header{
+  background:var(--cookie-orange);
+  color:#fff;text-align:center;
+  padding:22px 16px; position:sticky; top:0; z-index:20;
+  box-shadow:0 4px 12px rgba(0,0,0,.12);
+}
+#scrollProgress{
+  position:fixed; top:0; left:0; height:4px; width:0%;
+  background:#fff; z-index:30; box-shadow:0 1px 4px rgba(0,0,0,.2) inset;
+}
+nav{
+  background:var(--accent); display:flex; flex-wrap:wrap;
+  gap:18px; justify-content:center; padding:10px; position:sticky; top:64px; z-index:15;
+}
+nav a{color:#fff; text-decoration:none; font-weight:600; padding:4px 6px; border-radius:6px}
+nav a:hover{color:#ffd7b8; background:rgba(255,255,255,.08)}
+.container{max-width:1100px; margin:22px auto; padding:0 16px}
+.intro{
+  background:var(--surface); border-radius:14px; padding:20px;
+  box-shadow:var(--shadow); text-align:center; position:relative;
+  border:1px solid rgba(0,0,0,.06);
+}
+.toolbar{
+  display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:12px;
+}
+input[type="text"], select{
+  padding:10px 12px; border:2px solid var(--cookie-orange);
+  border-radius:10px; background:#fff; outline:none; min-width:220px;
+}
+[data-theme="dark"] input[type="text"], [data-theme="dark"] select{background:#fffdf9; color:#222}
+.btn{
+  --bsh: 0 2px 0 rgba(0,0,0,.15);
+  background:linear-gradient(180deg, #ffa86b, var(--cookie-orange));
+  color:#fff; border:0; border-radius:10px; padding:10px 16px;
+  font-weight:700; cursor:pointer; box-shadow:var(--bsh); transition:transform .05s ease, filter .2s ease;
+}
+.btn:hover{filter:brightness(1.05)}
+.btn:active{transform:translateY(1px)}
+.btn-ghost{
+  background:transparent; color:var(--cookie-orange); border:2px solid var(--cookie-orange);
+  border-radius:10px; padding:8px 12px; font-weight:700; cursor:pointer;
+}
+.btn-chip{
+  background:#fff8f0; color:var(--accent); border:2px dashed var(--cookie-orange); border-radius:999px;
+  padding:6px 10px; font-weight:700; cursor:pointer; font-size:12px;
+}
+.progress-bar{
+  height:16px; background:var(--cookie-light); border-radius:999px; overflow:hidden;
+  margin:16px 0 6px; border:2px solid var(--cookie-orange);
+}
+.progress-fill{height:100%; background:var(--cookie-orange); width:0%; transition:width 0.3s ease;}
+.progress-note{font-size:13px; opacity:.8}
+.grid{
+  margin-top:24px;
+  display:grid; gap:20px;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+}
+.card{
+  background:var(--surface); border-radius:16px; padding:18px;
+  box-shadow:var(--shadow);
+  transition:transform .2s ease, box-shadow .2s ease; position:relative; border:1px solid rgba(0,0,0,.06);
+}
+.card:hover{transform:translateY(-3px); box-shadow:0 10px 24px rgba(0,0,0,.12)}
+.card h3{color:var(--cookie-orange); margin-bottom:8px; font-size:20px}
+.card p{line-height:1.55}
+.badge{display:inline-block; background:var(--cookie-cream); color:var(--accent);
+  border-radius:999px; padding:4px 10px; font-size:12px; margin:.25rem 0 .5rem}
+.example{margin-top:10px; background:#fff0e0; border-left:5px solid var(--cookie-orange);
+  padding:10px; font-family:ui-monospace, monospace; border-radius:8px}
+.actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+.more-info{
+  display:none; margin-top:10px; background:var(--cookie-cream);
+  padding:12px; border-radius:10px
+}
+.more-info.open{display:block}
+.tools{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px}
+footer{
+  margin-top:auto; background:#ffe8d4; color:#5a4033;
+  text-align:center; padding:14px
+}
+/* modal */
+.modal{
+  display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:50;
+}
+.modal[open]{display:flex}
+.modal-content{
+  background:var(--surface); padding:20px; border-radius:12px; max-width:420px; text-align:center; box-shadow:var(--shadow);
+}
+/* toast */
+.toast{
+  position:fixed; bottom:20px; right:20px; background:#3c763d; color:#fff;
+  padding:10px 14px; border-radius:10px; display:none; z-index:60;
+  box-shadow:0 6px 16px rgba(0,0,0,.2);
+}
+.toast.show{display:block}
+/* floating cookies */
+@keyframes floatCookies{
+  0%{transform:translateY(100vh) rotate(0deg); opacity:0}
+  10%{opacity:.5}
+  100%{transform:translateY(-20vh) rotate(360deg); opacity:0}
+}
+.cookie{
+  position:fixed; width:60px; height:60px;
+  background-image:url('https://cookieclicker.wiki.gg/images/thumb/5/5a/PerfectCookie.png/210px-PerfectCookie.png');
+  background-size:cover; background-repeat:no-repeat;
+  animation:floatCookies linear infinite;
+  z-index:-1; opacity:.35; pointer-events:none;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.15));
+}
+/* FAB */
+.fab{
+  position:fixed; right:18px; bottom:18px; z-index:40;
+  display:flex; gap:10px; flex-direction:column;
+}
+.fab .btn{border-radius:50px; padding:10px 14px}
+/* study tray */
+#tray{
+  margin:26px 0 6px; background:var(--surface); border:1px dashed var(--cookie-orange);
+  padding:12px; border-radius:12px; display:none; box-shadow:var(--shadow)
+}
+#tray h4{margin-bottom:8px; color:var(--cookie-orange)}
+.chips{display:flex; flex-wrap:wrap; gap:8px}
+.chip{background:#fff8f2; border:2px solid var(--cookie-orange); padding:6px 10px; border-radius:999px; font-weight:700; font-size:13px; color:var(--cookie-orange)}
+.chip button{margin-left:6px; border:0; background:transparent; cursor:pointer; font-weight:900}
+/* print */
+@media print{
+  nav,.fab,.toast,.cookie,#scrollProgress{display:none !important}
+  body{background:none}
+}
+</style>
+</head>
+<body>
+<div id="scrollProgress"></div>
+<header>
+  <h1>🍪 Web Design Basics</h1>
+  <div class="kicker">Learn to craft sweet websites at Cookie Academy™.</div>
+</header>
+
+<nav>
+  <a href="#layout">Layout</a>
+  <a href="#frontdoor">Front Door</a>
+  <a href="#grid">Grid</a>
+  <a href="#navigation">Navigation</a>
+  <a href="#accessibility">Accessibility</a>
+  <a href="#professionalism">Professionalism</a>
+  <a href="#consistency">Consistency</a>
+  <a href="#frontend">Front-End</a>
+  <a href="#backend">Back-End</a>
+</nav>
+
+<main class="container">
+  <section class="intro" id="overview">
+    <h2>Welcome to Web Design Basics</h2>
+    <p style="margin-top:8px">
+      Web design is about making websites look nice and easy to use. Responsive design ensures it works on all devices.
+    </p>
+
+    <div class="toolbar">
+      <input type="text" id="searchInput" placeholder="Search cards…">
+      <select id="filterSelect" title="Filter by category">
+        <option value="all">All Categories</option>
+        <option value="frontend">Front-End</option>
+        <option value="backend">Back-End</option>
+      </select>
+      <button class="btn" id="clearFilters">Clear</button>
+      <button class="btn-ghost" id="themeToggle" title="Toggle theme">🌞 / 🌙</button>
+      <button class="btn" id="downloadBtn">Download Cheat-Sheet</button>
+      <button class="btn-ghost" id="printBtn">Print</button>
+    </div>
+
+    <div class="progress-bar" aria-label="Reading progress">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-note" id="progressNote">0 / 9 “More Info” opened</div>
+
+    <div id="tray">
+      <h4>📌 Study Tray</h4>
+      <div class="chips" id="trayChips"></div>
+    </div>
+  </section>
+
+  <section class="grid" id="cardsGrid">
+    <!-- 1 -->
+    <article class="card" data-category="frontend" id="layout">
+      <span class="badge">1) Site Layout 🗂️</span>
+      <h3>Arrange Your Content</h3>
+      <p>The arrangement of all elements on a webpage to create a clear and organized structure.</p>
+      <div class="example">Example: 3-column CSS Grid with consistent gutters.</div>
+      <div class="actions">
+        <button class="btn toggle-info">More Info 🍪</button>
+        <button class="btn-ghost cookie-tip">Cookie Tip</button>
+        <button class="btn-chip pin-btn">Pin</button>
+      </div>
+      <div class="more-info">
+        <p>Use a visual hierarchy (size, weight, spacing). Keep consistent margins and alignments for readability.</p>
+        <div class="tools">
+          <button class="btn-ghost copy-btn">Copy Summary</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 2 -->
+    <article class="card" data-category="frontend" id="frontdoor">
+      <span class="badge">2) Front Door 🚪</span>
+      <h3>Make a Good First Impression</h3>
+      <p>The homepage gives the first impression of the website.</p>
+      <div class="example">Example: Hero banner with a clear CTA and concise value prop.</div>
+      <div class="actions">
+        <button class="btn toggle-info">More Info 🍪</button>
+        <button class="btn-ghost cookie-tip">Cookie Tip</button>
+        <button class="btn-chip pin-btn">Pin</button>
+      </div>
+      <div class="more-info">
+        <p>Keep above-the-fold content clean, fast, and focused. Make the primary action obvious.</p>
+        <div class="tools">
+          <button class="btn-ghost copy-btn">Copy Summary</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3 -->
+    <article class="card" data-category="frontend" id="grid">
+      <span class="badge">3) Grid-Based Layout 📐</span>
+      <h3>Keep It Balanced</h3>
+      <p>Organizes content into rows and columns for balance and alignment.</p>
+      <div class="example">Example: 12-column layout with responsive breakpoints.</div>
+      <div class="actions">
+        <button class="btn toggle-info">More Info 🍪</button>
+        <button class="btn-ghost cookie-tip">Cookie Tip</button>
+        <button class="btn-chip pin-btn">Pin</button>
+      </div>
+      <div class="more-info">
+        <p>Use CSS Grid/Flexbox patterns. Align items and maintain consistent rhythm (8px/4pt scale).</p>
+        <div class="tools">
+          <button class="btn-ghost copy-btn">Copy Summary</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 4 -->
+    <article class="card" data-category="frontend" id="navigation">
+      <span class="badge">4) Navigation 🧭</span>
+      <h3>Help Visitors Find Their Way</h3>
+      <p>Menus and links that help users move easily between pages on a site.</p>
+      <div class="example">Example: Sticky top nav with skip link and active state.</div>
+      <div class="actions">
+        <button class="btn toggle-info">More Info 🍪</button>
+        <button class="btn-ghost cookie-tip">Cookie Tip</button>
+        <button class="btn-chip pin-btn">Pin</button>
+      </div>
+      <div class="more-info">
+        <p>Limit top-level items to 5–7. Provide clear labels and visible focus styles for keyboard users.</p>
+        <div class="tools">
+          <button class="btn-ghost copy-btn">Copy Summary</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 5 -->
+    <article class="card" data-category="frontend" id="accessibility">
+      <span class="badge">5) Accessibility ♿</span>
+      <h3>Include Everyone</h3>
+      <p>Designing so everyone, including people with disabilities, can use it.</p>
+      <div class="example">Example: Alt text, sufficient color contrast, keyboard nav.</div>
+      <div class="actions">
+        <button class="btn toggle-info">More Info 🍪</button>
+        <button class="btn-ghost cookie-tip">Cookie Tip</button>
+        <button class="btn-chip pin-btn">Pin</button>
+      </div>
+      <div class="more-info">
+        <p>Follow WCAG guidelines. Use semantic HTML, labels for inputs, and test with screen readers.</p>
+        <div class="tools">
+          <button class="btn-ghost copy-btn">Copy Summary</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 6 -->
+    <article class="card" data-category="frontend" id="professionalism">
+      <span class="badge">6) Professionalism 💼</span>
+      <h3>Look Trustworthy</h3>
+      <p>Create a polished, trustworthy, and error-free site.</p>
+      <div class="example">Example: Consistent branding, clean typography, no typos.</div>
+      <div class="actions">
+        <button class="btn toggle-info">More Info 🍪</button>
+        <button class="btn-ghost cookie-tip">Cookie Tip</button>
+        <button class="btn-chip pin-btn">Pin</button>
+      </div>
+      <div class="more-info">
+        <p>Proofread, lint your code, and use a design system. Optimize performance and images.</p>
+        <div class="tools">
+          <button class="btn-ghost copy-btn">Copy Summary</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 7 -->
+    <article class="card" data-category="frontend" id="consistency">
+      <span class="badge">7) Consistency 🎯</span>
+      <h3>Match Your Purpose</h3>
+      <p>Keep the style and tone matching your brand identity.</p>
+      <div class="example">Example: Shared tokens for color, spacing, and type.</div>
+      <div class="actions">
+        <button class="btn toggle-info">More Info 🍪</button>
+        <button class="btn-ghost cookie-tip">Cookie Tip</button>
+        <button class="btn-chip pin-btn">Pin</button>
+      </div>
+      <div class="more-info">
+        <p>Document choices in a style guide and reuse components to reduce drift.</p>
+        <div class="tools">
+          <button class="btn-ghost copy-btn">Copy Summary</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 8 -->
+    <article class="card" data-category="frontend" id="frontend">
+      <span class="badge">8) Front-End 🎨</span>
+      <h3>What Users See</h3>
+      <p>The visible part of the site — text, images, buttons, and menus.</p>
+      <div class="example">Example: HTML + CSS + JS UI layer.</div>
+      <div class="actions">
+        <button class="btn toggle-info">More Info 🍪</button>
+        <button class="btn-ghost cookie-tip">Cookie Tip</button>
+        <button class="btn-chip pin-btn">Pin</button>
+      </div>
+      <div class="more-info">
+        <p>Prioritize UX: clear typography, spacing, and meaningful motion. Test on multiple devices.</p>
+        <div class="tools">
+          <button class="btn-ghost copy-btn">Copy Summary</button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 9 -->
+    <article class="card" data-category="backend" id="backend">
+      <span class="badge">9) Back-End 🛠️</span>
+      <h3>Behind the Scenes</h3>
+      <p>How the website works in the background — servers, databases, and logic.</p>
+      <div class="example">Example: Node.js/Express API with a SQL/NoSQL database.</div>
+      <div class="actions">
+        <button class="btn toggle-info">More Info 🍪</button>
+        <button class="btn-ghost cookie-tip">Cookie Tip</button>
+        <button class="btn-chip pin-btn">Pin</button>
+      </div>
+      <div class="more-info">
+        <p>Keep code secure (OWASP), use env vars, handle errors gracefully, and monitor performance.</p>
+        <div class="tools">
+          <button class="btn-ghost copy-btn">Copy Summary</button>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Quick Quiz -->
+  <section class="intro" id="quiz" style="margin-top:24px">
+    <h2>Quick Quiz</h2>
+    <p style="margin-top:6px">Which part of a website is visible to users?</p>
+    <div style="margin-top:8px; text-align:left; max-width:480px; margin-inline:auto">
+      <label><input type="radio" name="q1" value="correct"> Front-End</label><br>
+      <label><input type="radio" name="q1" value="wrong"> Back-End</label>
+    </div>
+    <div class="toolbar" style="justify-content:center">
+      <button class="btn" id="checkQuiz">Check Answer</button>
+      <button class="btn-ghost" id="resetQuiz">Reset</button>
+    </div>
+    <div id="quizResult" style="font-weight:700; margin-top:8px"></div>
+  </section>
+</main>
+
+<!-- Modal -->
+<div class="modal" id="tipModal" aria-modal="true" role="dialog" aria-labelledby="tipText">
+  <div class="modal-content">
+    <p id="tipText" style="margin-bottom:10px"></p>
+    <button class="btn" id="closeTip">Close</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- FAB -->
+<div class="fab">
+  <button class="btn" id="toTop" title="Back to top">⬆️</button>
+</div>
+
+<footer>Made with 🍪 at Cookie Academy™</footer>
+
+<script>
+/* ===== Helpers ===== */
+const $ = (sel, ctx=document) => ctx.querySelector(sel);
+const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+const toast = (msg, ok=true) => {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.style.background = ok ? '#2e7d32' : '#c62828';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 1800);
+};
+
+/* ===== Tips ===== */
+const tips=[
+  "Whitespace is like milk for cookies — it makes everything easier to digest.",
+  "Keep navigation simple — aim for 5–7 top-level items.",
+  "Test on both desktop and mobile devices.",
+  "Use semantic HTML and meaningful alt text.",
+  "Establish an 8px spacing scale for rhythm."
+];
+
+/* ===== State (persisted) ===== */
+const STATE_KEYS = {
+  theme:'wa_theme',
+  search:'wa_search',
+  filter:'wa_filter',
+  opened:'wa_opened',
+  tray:'wa_tray',
+  quiz:'wa_quiz'
+};
+
+/* ===== Theme Toggle ===== */
+const root = document.documentElement;
+$('#themeToggle').addEventListener('click', ()=>{
+  const isDark = root.getAttribute('data-theme') === 'dark';
+  root.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem(STATE_KEYS.theme, isDark ? 'light' : 'dark');
+});
+(function restoreTheme(){
+  const saved = localStorage.getItem(STATE_KEYS.theme);
+  if(saved){ root.setAttribute('data-theme', saved); }
+})();
+
+/* ===== Search & Filter (with persistence) ===== */
+const searchInput = $('#searchInput');
+const filterSelect = $('#filterSelect');
+const clearFilters = $('#clearFilters');
+function applyFilter(){
+  const q = (searchInput.value||'').toLowerCase();
+  const cat = filterSelect.value;
+  $$('.card').forEach(card=>{
+    const matchesQuery = card.textContent.toLowerCase().includes(q);
+    const matchesCat = (cat==='all' || card.dataset.category===cat);
+    card.style.display = (matchesQuery && matchesCat) ? 'block' : 'none';
+  });
+  localStorage.setItem(STATE_KEYS.search, searchInput.value);
+  localStorage.setItem(STATE_KEYS.filter, filterSelect.value);
+}
+searchInput.addEventListener('input', applyFilter);
+filterSelect.addEventListener('change', applyFilter);
+clearFilters.addEventListener('click', ()=>{
+  searchInput.value=''; filterSelect.value='all'; applyFilter();
+});
+
+/* restore filter */
+(function(){
+  const s = localStorage.getItem(STATE_KEYS.search);
+  const f = localStorage.getItem(STATE_KEYS.filter);
+  if(s!==null) searchInput.value = s;
+  if(f!==null) filterSelect.value = f;
+  applyFilter();
+})();
+
+/* ===== More Info toggles + Progress ===== */
+function updateProgress(){
+  const total = $$('.card').length;
+  const opened = $$('.more-info.open').length;
+  const pct = Math.round((opened/total)*100);
+  $('#progressFill').style.width = pct + '%';
+  $('#progressNote').textContent = `${opened} / ${total} “More Info” opened`;
+  // Save opened IDs
+  const openIds = $$('.card').filter(c => $('.more-info', c).classList.contains('open')).map(c => c.id);
+  localStorage.setItem(STATE_KEYS.opened, JSON.stringify(openIds));
+}
+$$('.toggle-info').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const wrap = btn.closest('.card').querySelector('.more-info');
+    wrap.classList.toggle('open');
+    updateProgress();
+  });
+});
+/* restore opened */
+(function(){
+  const raw = localStorage.getItem(STATE_KEYS.opened);
+  if(!raw) return;
+  try{
+    const ids = JSON.parse(raw);
+    ids.forEach(id=>{
+      const card = document.getElementById(id);
+      if(card) card.querySelector('.more-info').classList.add('open');
+    });
+    updateProgress();
+  }catch(e){}
+})();
+
+/* ===== Cookie Tip Modal ===== */
+const modal = $('#tipModal');
+const tipText = $('#tipText');
+const closeTip = $('#closeTip');
+$$('.cookie-tip').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    tipText.textContent = tips[Math.floor(Math.random()*tips.length)];
+    modal.setAttribute('open','');
+    closeTip.focus();
+  });
+});
+closeTip.addEventListener('click', ()=> modal.removeAttribute('open'));
+window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') modal.removeAttribute('open'); });
+
+/* ===== Copy Summary ===== */
+$$('.copy-btn').forEach(btn=>{
+  btn.addEventListener('click', async ()=>{
+    const info = btn.closest('.more-info').innerText.trim();
+    try{
+      await navigator.clipboard.writeText(info);
+      toast('Copied summary to clipboard!');
+    }catch{
+      toast('Copy failed', false);
+    }
+  });
+});
+
+/* ===== Study Tray (pin cards) ===== */
+const tray = $('#tray'); const trayChips = $('#trayChips');
+function renderTray(){
+  const pins = JSON.parse(localStorage.getItem(STATE_KEYS.tray) || '[]');
+  trayChips.innerHTML = '';
+  if(pins.length===0){ tray.style.display='none'; return; }
+  tray.style.display='block';
+  pins.forEach(id=>{
+    const card = document.getElementById(id);
+    if(!card) return;
+    const chip = document.createElement('div');
+    chip.className='chip';
+    chip.textContent = card.querySelector('h3').textContent;
+    const x = document.createElement('button'); x.textContent='×';
+    x.title='Remove';
+    x.addEventListener('click', ()=> {
+      const next = pins.filter(pid=>pid!==id);
+      localStorage.setItem(STATE_KEYS.tray, JSON.stringify(next));
+      renderTray();
+    });
+    chip.appendChild(x);
+    trayChips.appendChild(chip);
+  });
+}
+$$('.pin-btn').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    const id = b.closest('.card').id;
+    const pins = new Set(JSON.parse(localStorage.getItem(STATE_KEYS.tray) || '[]'));
+    if(pins.has(id)){ toast('Already pinned'); return; }
+    pins.add(id);
+    localStorage.setItem(STATE_KEYS.tray, JSON.stringify([...pins]));
+    renderTray();
+    toast('Pinned to Study Tray 📌');
+  });
+});
+renderTray();
+
+/* ===== Quiz ===== */
+const checkQuiz = $('#checkQuiz'), resetQuiz=$('#resetQuiz'), quizResult=$('#quizResult');
+checkQuiz.addEventListener('click', ()=>{
+  const ans = $('input[name="q1"]:checked', $('#quiz'));
+  if(!ans){ quizResult.textContent='Pick an answer first.'; quizResult.style.color=''; return; }
+  const correct = ans.value==='correct';
+  quizResult.textContent = correct ? 'Correct! Front-End is what users see.' : 'Not quite. The Back-End runs behind the scenes.';
+  quizResult.style.color = correct ? 'var(--green)' : 'var(--red)';
+  localStorage.setItem(STATE_KEYS.quiz, ans.value);
+});
+resetQuiz.addEventListener('click', ()=>{
+  $$('input[name="q1"]', $('#quiz')).forEach(i=> i.checked=false);
+  quizResult.textContent='';
+  localStorage.removeItem(STATE_KEYS.quiz);
+});
+(function restoreQuiz(){
+  const saved = localStorage.getItem(STATE_KEYS.quiz);
+  if(!saved) return;
+  const radio = $(`input[name="q1"][value="${saved}"]`, $('#quiz'));
+  if(radio){ radio.checked=true; checkQuiz.click(); }
+})();
+
+/* ===== Download & Print ===== */
+$('#downloadBtn').addEventListener('click', ()=>{
+  const parts = $$('.card').map(c=>{
+    const title = c.querySelector('h3').textContent.trim();
+    const body = c.querySelector('p').textContent.trim();
+    const ex = c.querySelector('.example').textContent.trim();
+    const more = c.querySelector('.more-info').innerText.trim();
+    return `## ${title}\n${body}\n- ${ex}\n\nMore:\n${more}\n`;
+  });
+  const blob = new Blob([parts.join('\n')], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download='web-design-basics-cheatsheet.txt';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  toast('Cheat-sheet downloaded!');
+});
+$('#printBtn').addEventListener('click', ()=> window.print());
+
+/* ===== Back to top + Scroll progress ===== */
+$('#toTop').addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+window.addEventListener('scroll', ()=>{
+  const sc = window.scrollY;
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = Math.min(100, Math.max(0, (sc/h)*100));
+  $('#scrollProgress').style.width = pct + '%';
+});
+
+/* ===== Floating cookies ===== */
+function spawnCookie(){
+  const cookie=document.createElement('div');
+  cookie.classList.add('cookie');
+  cookie.style.left=Math.random()*100+'vw';
+  const size=Math.random()*40+30;
+  cookie.style.width=size+'px'; cookie.style.height=size+'px';
+  cookie.style.animationDuration=(Math.random()*10+10)+'s';
+  document.body.appendChild(cookie);
+  setTimeout(()=>cookie.remove(),20000);
+}
+setInterval(spawnCookie, 800);
+
+/* ===== Restore opened/progress initially ===== */
+updateProgress();
+</script>
+</body>
+</html>

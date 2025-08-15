@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Netiquette Guidelines | Cookie Academy 🍪</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+  
+  
+    :root {
+      --cookie-orange: #d2691e;
+      --cookie-light: #fff8f2;
+      --cookie-cream: #fff2e5;
+      --cookie-text: #3d2b1f;
+      --highlight: #ffbb88;
+      --cookie-bg: url('https://www.transparenttextures.com/patterns/cookies.png');
+      --green: #2e7d32;
+      --red: #c62828;
+      --amber: #ff8f00;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background-image: url(https://www.shutterstock.com/image-vector/chocolate-chip-cookies-doodle-seamless-600nw-2279158739.jpg);
+	  background-color: rgba(255,255,255,0.6);
+    background-blend-mode: lighten;
+      color: var(--cookie-text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header & Nav — copied theme */
+    header {
+      background-color: var(--cookie-orange);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 { line-height: 1.2; }
+    header p { opacity: 0.95; }
+
+    nav {
+      background-color: #b15514;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--highlight); }
+
+    .main-content {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      gap: 18px;
+    }
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 25px 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease;
+    }
+    .card:hover { transform: scale(1.01); }
+    .card h2 { color: var(--cookie-orange); margin-bottom: 10px; }
+
+    .intro.card { text-align: center; }
+
+    .example {
+      background-color: #fff0e0;
+      padding: 10px;
+      border-left: 5px solid var(--cookie-orange);
+      margin-top: 12px;
+      font-family: monospace;
+      border-radius: 6px;
+      white-space: pre-wrap;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #ffe8d4;
+      font-size: 14px;
+      color: #5a4033;
+      margin-top: auto;
+    }
+
+    /* Accordion for the 10 Core Rules */
+    .accordion { border-radius: 12px; overflow: hidden; }
+    .rule {
+      border: 1px solid #e2d4c4;
+      border-left: 6px solid var(--cookie-orange);
+      margin-bottom: 10px;
+      border-radius: 10px;
+      background: #fff;
+    }
+    .rule summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 16px 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--cookie-orange);
+    }
+    .rule summary::-webkit-details-marker { display: none; }
+    .rule summary span { color: var(--cookie-text); font-weight: 600; }
+    .rule[open] summary { background: var(--cookie-cream); }
+    .rule .content { padding: 16px 18px 20px; }
+
+    .tip {
+      background: var(--cookie-cream);
+      border-left: 6px solid var(--highlight);
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-size: 15px;
+    }
+
+    /* Practice area */
+    .practice-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-top: 10px;
+    }
+    .btn {
+      background-color: var(--cookie-orange);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.05s ease, background 0.2s ease;
+    }
+    .btn:hover { background: #b15514; }
+    .btn:active { transform: translateY(1px); }
+
+    .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .chip {
+      background: #fff8f2;
+      border: 2px solid var(--cookie-orange);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--cookie-orange);
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .result { margin-top: 10px; font-weight: 700; }
+    .ok { color: var(--green); }
+    .warn { color: var(--amber); }
+    .bad { color: var(--red); }
+
+    .pledge-box {
+      background: var(--cookie-cream);
+      border: 2px dashed var(--cookie-orange);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .pledge-box textarea {
+      width: 100%;
+      border: 2px solid #e2d4c4;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 16px;
+      min-height: 90px;
+    }
+
+    /* Simple progress bar */
+    .progress {
+      height: 8px; background: #ffe1cc; border-radius: 999px; overflow: hidden; margin-top: 8px;
+    }
+    .progress > div { height: 100%; width: 0%; background: var(--cookie-orange); transition: width 0.6s ease; }
+
+    @media (max-width: 768px) {
+      nav { flex-wrap: wrap; gap: 15px; padding: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header (copied theme) -->
+  <header>
+    <h1>🍪 Netiquette Guidelines</h1>
+    <p>Be kind. Be clear. Be cookie‑classy online.</p>
+  </header>
+
+  <!-- Navigation (copied theme) -->
+<nav>
+  <a href="#introduction" style="color:white;margin:0 15px;text-decoration:none;font-weight:bold;">Introduction</a>
+  <a href="#core-rules" style="color:white;margin:0 15px;text-decoration:none;font-weight:bold;">Core Rules</a>
+  <a href="#practice" style="color:white;margin:0 15px;text-decoration:none;font-weight:bold;">Practice</a>
+</nav>
+
+  <div class="main-content">
+    <!-- Intro -->
+    <section class="intro card" id="intro">
+      <h2>What is Netiquette?</h2>
+      <p>Netiquette is the set of good manners for communicating online. It’s about remembering the human, being respectful, and using your words to build—not break—communities.</p>
+      <div class="example">Golden Rule: <strong>Write to others the way you’d like others to write to you.</strong></div>
+    </section>
+
+    <!-- Core Rules Accordion -->
+    <section class="card" id="rules">
+      <h2>🍪 The 10 Core Rules</h2>
+      <p class="tip">Each rule below expands—tap to read details and tips.</p>
+      <div class="accordion">
+        <details class="rule">
+          <summary>Rule 1: Remember the Human <span>Respect real people behind the screens</span></summary>
+          <div class="content">
+            <p>Your words are read by real people. Before you hit <em>Send</em>, ask: “Would I be okay receiving this?”</p>
+            <div class="example">Try: “Hi! I appreciate your point. Here’s another angle…”</div>
+          </div>
+        </details>
+        <details class="rule">
+          <summary>Rule 2: Follow real‑life standards <span>Don’t be meaner online</span></summary>
+          <div class="content">
+            <p>If you wouldn’t say it face‑to‑face, don’t post it. Avoid SHOUTING in ALL CAPS, excessive slang, and insults.</p>
+            <div class="example">Write: “Please / Thank you / I disagree because…”</div>
+          </div>
+        </details>
+        <details class="rule">
+          <summary>Rule 3: Know where you are in cyberspace <span>Match the space’s tone</span></summary>
+          <div class="content">
+            <p>Different spaces have different norms. A DM to a friend ≠ a class forum or work email.</p>
+            <div class="example">Formal in class/work; casual with friends (still respectful!).</div>
+          </div>
+        </details>
+        <details class="rule">
+          <summary>Rule 4: Respect people’s time & bandwidth <span>Be concise and useful</span></summary>
+          <div class="content">
+            <p>Keep messages clear and focused. Avoid giant attachments and long off‑topic text.</p>
+            <div class="example">Use bullets, short paragraphs, and descriptive subject lines.</div>
+          </div>
+        </details>
+        <details class="rule">
+          <summary>Rule 5: Make yourself look good online <span>Clarity, grammar, and kindness</span></summary>
+          <div class="content">
+            <ul>
+              <li>Check spelling and grammar.</li>
+              <li>Know your topic and state it clearly.</li>
+              <li>Be pleasant and polite.</li>
+            </ul>
+            <div class="tip">If you wouldn’t show it in public, don’t share it online—today or ever.</div>
+          </div>
+        </details>
+        <details class="rule">
+          <summary>Rule 6: Share expert knowledge <span>Help the community learn</span></summary>
+          <div class="content">
+            <p>Post helpful resources and what you’ve learned. If you ask a question and get answers, share a summary back.</p>
+            <div class="example">“Here are 3 links that solved my issue…”</div>
+          </div>
+        </details>
+        <details class="rule">
+          <summary>Rule 7: Keep flame wars under control <span>Cool heads, warm cookies</span></summary>
+          <div class="content">
+            <p>Strong opinions are okay; personal attacks aren’t. Don’t feed the flames—recenter the discussion.</p>
+            <div class="example">“Let’s focus on the problem. What does the data say?”</div>
+          </div>
+        </details>
+        <details class="rule">
+          <summary>Rule 8: Respect privacy <span>Not everything is sharable</span></summary>
+          <div class="content">
+            <p>Treat private info with care. When unsure, don’t forward, screenshot, or repost.</p>
+            <div class="example">Ask permission before sharing messages or photos.</div>
+          </div>
+        </details>
+        <details class="rule">
+          <summary>Rule 9: Don’t abuse power <span>Expertise ≠ license to bully</span></summary>
+          <div class="content">
+            <p>Skill and status come with responsibility. Use them to lift others, not to intimidate.</p>
+            <div class="example">Offer guidance, not gatekeeping.</div>
+          </div>
+        </details>
+        <details class="rule">
+          <summary>Rule 10: Be forgiving of mistakes <span>Correct in private, praise in public</span></summary>
+          <div class="content">
+            <p>Everyone is learning. If it’s minor, let it slide. If you must correct, do it kindly, preferably in private.</p>
+            <div class="example">“Small typo—thought you’d want to know. Thanks for the post!”</div>
+          </div>
+        </details>
+      </div>
+
+      <!-- Progress tracker -->
+      <div style="margin-top:16px">
+        <strong>Reading progress</strong>
+        <div class="progress" aria-label="Rules Reading Progress"><div id="progressFill"></div></div>
+        <div id="progressText" style="margin-top:6px; font-weight:700; font-size:14px;" aria-live="polite">0 / 10 rules opened</div>
+      </div>
+    </section>
+
+    <!-- Practice section -->
+    <section class="card" id="practice">
+      <h2>🎯 Practice: Is this Netiquette‑friendly?</h2>
+      <div class="practice-grid">
+        <!-- Politeness Meter (Cookie Theme Box) -->
+        <div class="card" style="background:#fff8f0;position:relative;overflow:hidden;border:4px solid #d2691e;border-radius:20px;box-shadow:0 4px 12px rgba(0,0,0,0.15);padding:20px;">
+          <!-- Decorative Cookies -->
+          <div style="position:absolute;top:-15px;left:-15px;font-size:2rem;">🍪</div>
+          <div style="position:absolute;top:-15px;right:-15px;font-size:2rem;">🍪</div>
+          <div style="position:absolute;bottom:-15px;left:-15px;font-size:2rem;">🍪</div>
+          <div style="position:absolute;bottom:-15px;right:-15px;font-size:2rem;">🍪</div>
+
+          <h3 style="color:#8b4513;text-align:center;margin-bottom:10px;font-family:'Comic Sans MS', cursive;">🍪 Politeness Meter</h3>
+          <p style="text-align:center;color:#5c4033;margin-bottom:20px;font-family:'Comic Sans MS', cursive;">Bake your words until they're perfectly polite!</p>
+
+          <textarea id="politenessInput" rows="4" style="width:100%;padding:12px;border:2px solid #d2691e;border-radius:12px;font-size:1rem;resize:none;outline:none;background:#fff3e0;font-family:'Comic Sans MS', cursive;">GIVE ME THAT FILE NOW!!</textarea>
+          <div style="margin-top:20px;">
+            <div style="width:100%;height:25px;background:#f5deb3;border-radius:20px;overflow:hidden;box-shadow:inset 0 2px 5px rgba(0,0,0,0.15);">
+              <div id="meterFill" style="width:20%;height:100%;background:#8b4513;transition:width 0.3s ease, background 0.3s ease;"></div>
+            </div>
+            <p id="meterLabel" style="margin-top:10px;font-weight:bold;color:#8b0000;text-align:center;font-size:1.1rem;font-family:'Comic Sans MS', cursive;">Impolite 😠</p>
+          </div>
+        </div>
+
+        <!-- Scenario Quiz -->
+        <div class="card" style="background:#fffaf6">
+          <h3 style="color:var(--cookie-orange)">Mini Scenario Quiz</h3>
+          <ol style="padding-left:18px">
+            <li style="margin-bottom:8px">You disagree in a class forum. Best first line?
+              <div>
+                <label><input type="radio" name="q1" value="0"> YOU ARE WRONG!!!</label><br>
+                <label><input type="radio" name="q1" value="1"> I see it differently—here’s why…</label>
+              </div>
+            </li>
+            <li style="margin-bottom:8px">Friend shares health info in a group chat. You should…
+              <div>
+                <label><input type="radio" name="q2" value="1"> Keep it private or ask before sharing</label><br>
+                <label><input type="radio" name="q2" value="0"> Screenshot to another group</label>
+              </div>
+            </li>
+            <li style="margin-bottom:8px">You spot a mistake in a post. Best action?
+              <div>
+                <label><input type="radio" name="q3" value="1"> Send a kind private note</label><br>
+                <label><input type="radio" name="q3" value="0"> Mock publicly to teach a lesson</label>
+              </div>
+            </li>
+          </ol>
+          <button class="btn" id="quizBtn" type="button">Check Answers</button>
+          <div id="quizResult" class="result"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+    Made with 🍪 at Cookie Academy™
+  </footer>
+
+  <script>
+    // Wrap everything to avoid global timing issues
+    (function() {
+      // ===== Progress tracker for opened rules =====
+      const detailsEls = Array.from(document.querySelectorAll('.rule'));
+      const progressFill = document.getElementById('progressFill');
+      const progressText = document.getElementById('progressText');
+
+      function updateProgress() {
+        const opened = detailsEls.filter(d => d.open).length;
+        const pct = Math.round((opened / detailsEls.length) * 100);
+        if (progressFill) progressFill.style.width = pct + '%';
+        if (progressText) progressText.textContent = ${opened} / ${detailsEls.length} rules opened;
+      }
+      detailsEls.forEach(d => d.addEventListener('toggle', updateProgress));
+
+      // ===== Tone Analyzer =====
+      function analyzeTone() {
+        const inputEl = document.getElementById('toneInput');
+        const out = document.getElementById('toneResult');
+        const issues = [];
+        if (!inputEl || !out) return;
+        const input = inputEl.value || '';
+
+        const lower = input.toLowerCase();
+        const exclamations = (input.split('!').length - 1);
+        const lettersOnly = Array.from(input).filter(c => /[A-Za-z]/.test(c));
+        const uppersOnly = Array.from(input).filter(c => /[A-Z]/.test(c));
+        const upperRatio = lettersOnly.length ? (uppersOnly.length / lettersOnly.length) : 0;
+
+        const startStr = lower.trimStart();
+        const greetingAtStart = startStr.startsWith('hi ') || startStr.startsWith('hi,') ||
+                                startStr.startsWith('hello') || startStr.startsWith('hey') ||
+                                startStr.startsWith('good morning') || startStr.startsWith('good afternoon') || startStr.startsWith('good evening');
+
+        const hasPoliteness = lower.includes('please') || lower.includes('thank you') || lower.includes('thanks') || lower.includes('appreciate');
+
+        const PROFANITY = ['fuck','shit','asshole','bitch','bastard'];
+        const INSULTS = ['stupid','idiot','dumb'];
+        const hasProfanity = PROFANITY.some(w => lower.includes(w));
+        const hasInsults = INSULTS.some(w => lower.includes(w)) || lower.includes('shut up') || lower.includes('hate you');
+
+        if (!input.trim()) {
+          out.textContent = 'Please paste a message to analyze.';
+          out.className = 'result warn';
+          return;
+        }
+
+        if (!greetingAtStart) issues.push('Consider a friendly greeting at the start.');
+        if (!hasPoliteness) issues.push('Politeness markers like "please" or "thank you" help.');
+        if (upperRatio > 0.7 && lettersOnly.length > 6) issues.push('Avoid ALL CAPS (it reads like shouting).');
+        if (exclamations > 3) issues.push('Too many exclamation points can feel aggressive.');
+        if (hasProfanity || hasInsults) issues.unshift('Tone contains profanity or insults — please rephrase.');
+
+        if (issues.length === 0) {
+          out.textContent = 'Looks good! Clear and courteous ✨';
+          out.className = 'result ok';
+        } else {
+          const severityClass = (hasProfanity || hasInsults) ? 'bad' : 'warn';
+          out.innerHTML = 'Suggestions:<ul style="margin-top:6px; padding-left:18px">' + issues.map(i => <li>${i}</li>).join('') + '</ul>';
+          out.className = result ${severityClass};
+        }
+      }
+
+      function insertPhrase(text) {
+        const ta = document.getElementById('toneInput');
+        if (!ta) return;
+        const start = ta.selectionStart || 0;
+        const end = ta.selectionEnd || 0;
+        const before = ta.value.substring(0, start);
+        const after = ta.value.substring(end);
+        ta.value = before + text + after;
+        ta.focus();
+        ta.selectionStart = ta.selectionEnd = start + text.length;
+      }
+
+      function suggestRewrite() {
+        const ta = document.getElementById('toneInput');
+        const box = document.getElementById('rewriteOut');
+        if (!ta || !box) return;
+        let txt = (ta.value || '').trim();
+        if (!txt) { box.style.display = 'none'; return; }
+
+        const lower = txt.toLowerCase();
+        const PROFANITY = ['fuck','shit','asshole','bitch','bastard'];
+        const INSULTS = ['stupid','idiot','dumb'];
+        const containsHarsh = PROFANITY.some(w => lower.includes(w)) ||
+                               INSULTS.some(w => lower.includes(w)) ||
+                               lower.includes('shut up') || lower.includes('hate you');
+
+        if (containsHarsh) {
+          txt = 'Hi, I’m feeling frustrated about this. Could you please help clarify or fix it? Thank you!';
+        } else {
+          txt = txt.replace(/!{2,}/g, '!');
+          const start = lower.trimStart();
+          const hasGreeting = start.startsWith('hi ') || start.startsWith('hi,') || start.startsWith('hello') || start.startsWith('hey') || start.startsWith('good morning') || start.startsWith('good afternoon') || start.startsWith('good evening');
+          if (!hasGreeting) txt = 'Hi, ' + txt;
+          if (!(lower.includes('please') || lower.includes('thank you') || lower.includes('thanks') || lower.includes('appreciate'))) {
+            if (!/[.?!]$/.test(txt)) txt += '.';
+            txt += ' Could you please clarify or help with this? Thank you!';
+          }
+        }
+
+        box.textContent = txt;
+        box.style.display = 'block';
+      }
+
+      // ===== Quiz =====
+      function gradeQuiz() {
+        const answers = [
+          document.querySelector('input[name="q1"]:checked'),
+          document.querySelector('input[name="q2"]:checked'),
+          document.querySelector('input[name="q3"]:checked')
+        ];
+        const result = document.getElementById('quizResult');
+        if (!result) return;
+        if (answers.some(a => !a)) { result.textContent = 'Answer all questions first.'; result.className = 'result warn'; return; }
+        const score = answers.reduce((s, a) => s + Number(a.value), 0);
+        const msgs = ['Keep practicing—review the rules above.','Nice! You’re on the right track.','Sweet! Cookie‑level netiquette!'];
+        const idx = score === 3 ? 2 : (score === 2 ? 1 : 0);
+        result.textContent = Score: ${score}/3 — ${msgs[idx]};
+        result.className = score === 3 ? 'result ok' : (score === 2 ? 'result warn' : 'result bad');
+        localStorage.setItem('netiquette_quiz_score', String(score));
+      }
+const politenessInput = document.getElementById('politenessInput');
+const meterFill = document.getElementById('meterFill');
+const meterLabel = document.getElementById('meterLabel');
+
+function updatePoliteness() {
+  const text = politenessInput.value.trim();
+  const lower = text.toLowerCase();
+
+  let score = 0;
+
+  if (lower.startsWith('hi') || lower.startsWith('hello') || lower.startsWith('hey') ||
+      lower.startsWith('good morning') || lower.startsWith('good afternoon') || lower.startsWith('good evening')) {
+    score += 2;
+  }
+  if (lower.includes('please')) score += 2;
+  if (lower.includes('thank you') || lower.includes('thanks')) score += 2;
+
+  const lettersOnly = text.replace(/[^a-zA-Z]/g, '');
+  const upperRatio = lettersOnly.length ? (lettersOnly.replace(/[^A-Z]/g, '').length / lettersOnly.length) : 0;
+  if (upperRatio > 0.5) score -= 2;
+
+  const harsh = ['stupid','idiot','hate','shut up','dumb','fuck','shit','bitch','asshole'];
+  if (harsh.some(w => lower.includes(w))) score -= 3;
+
+  let percentage = Math.min(Math.max((score + 3) * 20, 0), 100);
+  meterFill.style.width = percentage + '%';
+
+  if (percentage < 40) {
+    meterFill.style.background = 'linear-gradient(to right, #ff9999, #d2691e)';
+    meterLabel.textContent = 'Burnt Cookies 😠';
+    meterLabel.style.color = '#8b0000';
+  } else if (percentage < 70) {
+    meterFill.style.background = 'linear-gradient(to right, #ffeb99, #d2691e)';
+    meterLabel.textContent = 'Half-Baked 😐';
+    meterLabel.style.color = '#b8860b';
+  } else {
+    meterFill.style.background = 'linear-gradient(to right, #c2f0c2, #d2691e)';
+    meterLabel.textContent = 'Perfectly Baked 😊';
+    meterLabel.style.color = '#228b22';
+  }
+}
+
+politenessInput.addEventListener('input', updatePoliteness);
+updatePoliteness();
+      // ===== Wire up events without relying on inline HTML =====
+      document.getElementById('analyzeBtn')?.addEventListener('click', analyzeTone);
+      document.getElementById('rewriteBtn')?.addEventListener('click', suggestRewrite);
+      document.getElementById('quizBtn')?.addEventListener('click', gradeQuiz);
+      document.getElementById('savePledgeBtn')?.addEventListener('click', savePledge);
+      document.getElementById('copyPledgeBtn')?.addEventListener('click', copyPledge);
+      document.querySelectorAll('.chip').forEach(ch => ch.addEventListener('click', () => insertPhrase(ch.getAttribute('data-insert') || '')));
+
+      // Load stored pledge & last quiz score
+      window.addEventListener('load', () => {
+        const saved = localStorage.getItem(PLEDGE_KEY);
+        if (saved) {
+          const el = document.getElementById('pledgeText');
+          if (el) el.value = saved;
+        }
+        const lastScore = localStorage.getItem('netiquette_quiz_score');
+        if (lastScore) {
+          const el = document.getElementById('quizResult');
+          if (el) {
+            el.textContent = Last score on this device: ${lastScore}/3;
+            el.className = 'result';
+          }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

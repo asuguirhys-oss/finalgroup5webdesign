@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Productivity Tools | Cookie Academy 🍪</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --cookie-orange:#d2691e;
+      --cookie-cream:#fff2e5;
+      --cookie-light:#fff8f2;
+      --cookie-text:#3d2b1f;
+      --accent:#b15514;
+      --green:#2e7d32;
+      --red:#c62828;
+      --amber:#ff8f00;
+      --box-edge:#ead7c8;
+      --bg-soft:#fffaf6;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Fredoka',sans-serif;
+      background-image:url('https://www.transparenttextures.com/patterns/cookies.png'), linear-gradient(180deg,#fff8f2 0%, #ffeede 100%);
+      color:var(--cookie-text);
+      min-height:100vh;
+      display:flex;flex-direction:column;
+      overflow-x:hidden;
+    }
+
+    /* ===== Header & Nav ===== */
+    header{
+      background:var(--cookie-orange);
+      color:#fff;text-align:center;
+      padding:22px 16px; position:sticky; top:0; z-index:50;
+      box-shadow:0 4px 12px rgba(0,0,0,.12);
+    }
+    .kicker{font-size:14px; opacity:.9}
+    .toolbar{
+      margin-top:10px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+    }
+    .tbtn{
+      background:#fff1e6; border:2px solid #a54b11; color:#8b3a0f; font-weight:700;
+      padding:6px 10px; border-radius:10px; cursor:pointer;
+    }
+    .tbtn:focus{outline:3px solid #ffd7b8}
+
+    nav{
+      background:var(--accent); display:flex; flex-wrap:wrap;
+      gap:14px; justify-content:center; padding:10px; position:sticky; top:78px; z-index:40;
+      box-shadow:0 4px 8px rgba(0,0,0,.08);
+    }
+    nav a{color:#fff; text-decoration:none; font-weight:600; padding:6px 8px; border-radius:8px}
+    nav a.active{background:#8f3f0f}
+
+    /* ===== Layout ===== */
+    .container{max-width:1100px; margin:22px auto; padding:0 16px}
+    .intro{
+      background:#fff; border-radius:14px; padding:20px;
+      box-shadow:0 6px 16px rgba(0,0,0,.06); text-align:center;
+      border:2px solid var(--box-edge); outline:8px solid #fff;
+    }
+
+    .controls{
+      display:grid; gap:10px; grid-template-columns:1fr auto auto; align-items:center;
+      margin-top:12px;
+    }
+    .search{width:100%; padding:10px 12px; border:2px solid var(--box-edge); border-radius:10px}
+    .select{padding:10px 12px; border:2px solid var(--box-edge); border-radius:10px; background:#fff}
+
+    .grid{
+      margin-top:24px;
+      display:grid; gap:20px;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    }
+
+    /* ===== Boxy Cards ===== */
+    .card{
+      position:relative;
+      background:linear-gradient(180deg,#ffffff 0%, #fff7ee 100%);
+      border-radius:14px; padding:18px 18px 16px;
+      box-shadow:0 6px 16px rgba(0,0,0,.06);
+      transition:transform .2s ease, box-shadow .2s ease;
+      border:2px solid var(--box-edge); outline:8px solid #fff;
+    }
+    .card::before{
+      content:""; position:absolute; inset:0; border-radius:12px;
+      box-shadow:inset 0 3px 0 #fff, inset 0 -3px 0 #f1e0d1;
+      pointer-events:none;
+    }
+    .card:hover{transform:translateY(-2px); box-shadow:0 10px 22px rgba(0,0,0,.08)}
+    .card h3{color:var(--cookie-orange); margin-bottom:8px; font-size:20px}
+    .badge{
+      display:inline-block; background:var(--cookie-cream); color:var(--accent);
+      border-radius:999px; padding:4px 10px; font-size:12px; margin:.25rem 0 .5rem; font-weight:700;
+    }
+    .example{
+      margin-top:10px; background:#fff0e0; border-left:5px solid var(--cookie-orange);
+      padding:10px; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; border-radius:8px;
+    }
+    details.more{margin-top:12px; background:var(--bg-soft); border:2px dashed var(--box-edge); border-radius:10px; padding:10px}
+    details.more summary{cursor:pointer; font-weight:700; color:var(--accent)}
+
+    .card-actions{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap}
+    .btn{
+      background:var(--cookie-orange); color:#fff; border:0; border-radius:10px;
+      padding:9px 14px; font-weight:700; cursor:pointer; transition:transform .05s ease, background .2s ease;
+    }
+    .btn:hover{background:var(--accent)}
+    .btn:active{transform:translateY(1px)}
+
+    .ghost{background:#fff; color:var(--accent); border:2px solid var(--accent)}
+
+    /* ===== Table ===== */
+    .toggle-wrap{text-align:center; margin:28px 0 8px}
+    .table-wrap{display:none; overflow-x:auto; margin-top:10px}
+    table{width:100%; border-collapse:collapse; font-size:15px; background:#fff; border:2px solid var(--box-edge); outline:8px solid #fff}
+    th,td{border:1px solid #ead7c8; padding:10px; text-align:left}
+    th{background:var(--cookie-cream); color:var(--cookie-orange)}
+
+    /* ===== Quiz ===== */
+    .quiz{
+      margin-top:26px; background:#fff; border-radius:14px; padding:18px;
+      box-shadow:0 6px 16px rgba(0,0,0,.06); border:2px solid var(--box-edge); outline:8px solid #fff;
+    }
+    .quiz h3{color:var(--cookie-orange); margin-bottom:8px}
+    .quiz label{display:block; margin:6px 0; cursor:pointer}
+    .quiz .result{margin-top:10px; font-weight:700}
+    .correct{color:var(--green)} .incorrect{color:var(--red)}
+
+    footer{
+      margin-top:40px; background:#ffe8d4; color:#5a4033;
+      text-align:center; padding:14px;
+    }
+
+    /* ===== Floating cookies (behind content) ===== */
+    @keyframes floatCookies{
+      0%{transform:translateY(100vh) rotate(0deg); opacity:0}
+      10%{opacity:.5}
+      100%{transform:translateY(-20vh) rotate(360deg); opacity:0}
+    }
+    .cookie{
+      position:fixed; width:60px; height:60px;
+      background-image:url('https://cookieclicker.wiki.gg/images/thumb/5/5a/PerfectCookie.png/210px-PerfectCookie.png');
+      background-size:cover; background-repeat:no-repeat;
+      animation:floatCookies linear infinite;
+      z-index:-1; opacity:.35; pointer-events:none;
+      filter:drop-shadow(0 2px 2px rgba(0,0,0,.15));
+    }
+
+    /* ===== Back to top FAB ===== */
+    .fab{
+      position:fixed; right:16px; bottom:16px; z-index:60;
+      background:var(--cookie-orange); color:#fff; border:0; border-radius:999px;
+      width:48px; height:48px; font-size:22px; font-weight:700; cursor:pointer;
+      box-shadow:0 6px 16px rgba(0,0,0,.18); display:none;
+    }
+
+    /* ===== Modals ===== */
+    .modal{
+      position:fixed; inset:0; background:rgba(0,0,0,.4);
+      display:none; align-items:center; justify-content:center; z-index:100;
+    }
+    .modal.open{display:flex}
+    .modal-card{
+      background:#fff; border-radius:14px; padding:18px; width:min(720px, 92vw);
+      box-shadow:0 12px 28px rgba(0,0,0,.25); border:2px solid var(--box-edge); outline:8px solid #fff;
+    }
+    .modal-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px}
+    .close{background:#eee; border:0; border-radius:8px; padding:6px 10px; cursor:pointer; font-weight:700}
+
+    /* ===== Dark mode ===== */
+    .dark{
+      --cookie-light:#2a201a;
+      --cookie-cream:#3a2c22;
+      --box-edge:#4a3a2f;
+      --bg-soft:#33261f;
+      background-image:linear-gradient(180deg,#2d231d 0%, #251b15 100%);
+      color:#f7eadd;
+    }
+    .dark .intro, .dark .card, .dark table, .dark .quiz, .dark .modal-card{
+      background:#2e241e; outline-color:#1f1712; border-color:#4a3a2f;
+    }
+    .dark nav{background:#8f3f0f}
+    .dark .btn{background:#8f3f0f}
+    .dark .ghost{background:transparent; color:#ffd7b8; border-color:#ffd7b8}
+    .dark th{background:#3a2c22}
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🍪 Productivity Tools</h1>
+    <div class="kicker">Create smarter. Work faster. The Cookie Way™.</div>
+    <div class="toolbar">
+      <button class="tbtn" id="toggleDark">🌙 Dark Mode</button>
+      <button class="tbtn" id="toggleMotion">🎈 Reduce Motion</button>
+    </div>
+  </header>
+
+  <nav id="topnav" aria-label="Sections">
+    <a href="#overview">Overview</a>
+    <a href="#word-data">Word & Data</a>
+    <a href="#spreadsheet">Spreadsheet</a>
+    <a href="#presentation">Presentation</a>
+    <a href="#database">Database</a>
+    <a href="#graphics">Graphics</a>
+    <a href="#file-mgmt">File Management</a>
+    <a href="#dtp">Desktop Publishing</a>
+    <a href="#org">Organization</a>
+    <a href="#email">Email</a>
+  </nav>
+
+  <main class="container">
+    <section class="intro" id="overview">
+      <h2>What are Productivity Tools?</h2>
+      <p style="margin-top:8px">
+        Productivity tools help you create professional quality documents, presentations, graphics, tables, and more.
+        They can be bundled in suites or installed as separate apps.
+      </p>
+
+      <!-- Controls -->
+      <div class="controls" role="region" aria-label="Filtering controls">
+        <input id="search" class="search" type="search" placeholder="🔎 Search tools, uses, outputs…" aria-label="Search cards" />
+        <select id="category" class="select" aria-label="Filter by category">
+          <option value="all">All categories</option>
+          <option value="word">Word/Data</option>
+          <option value="sheet">Spreadsheet</option>
+          <option value="slides">Presentation</option>
+          <option value="db">Database</option>
+          <option value="gfx">Graphics</option>
+          <option value="files">File Mgmt</option>
+          <option value="dtp">Desktop Publishing</option>
+          <option value="org">Organization</option>
+          <option value="mail">Email</option>
+        </select>
+        <button class="btn ghost" id="clearFilters" type="button">Reset</button>
+      </div>
+
+      <div class="toggle-wrap">
+        <button class="btn" id="toggleTable" type="button">🔁 Toggle Table Summary</button>
+      </div>
+      <div class="table-wrap" id="tableWrap" aria-live="polite">
+        <table>
+          <thead>
+            <tr><th>Category</th><th>Main Use</th><th>Typical Outputs</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Word/Data Processing</td><td>Typed documents; formatting; spell check</td><td>Reports, letters</td></tr>
+            <tr><td>Spreadsheet</td><td>Rows/columns; formulas; functions</td><td>Budgets, gradebooks</td></tr>
+            <tr><td>Presentation</td><td>Slides with text & images</td><td>Slide decks</td></tr>
+            <tr><td>Database</td><td>Store, query, validate data</td><td>Tables, forms, reports</td></tr>
+            <tr><td>Graphic Design</td><td>Create & edit 2D images</td><td>Logos, posters</td></tr>
+            <tr><td>File Management</td><td>Organize files/folders</td><td>Structured directories</td></tr>
+            <tr><td>Desktop Publishing</td><td>Print-ready layouts</td><td>Brochures, cards</td></tr>
+            <tr><td>Organization</td><td>Tasks, notes, planning</td><td>Schedules, boards</td></tr>
+            <tr><td>Email</td><td>Send/receive messages</td><td>Emails, threads</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== Cards Grid (all 9 restored) ===== -->
+    <section class="grid" id="cards">
+      <!-- 1 Word/Data -->
+      <article class="card" id="word-data" data-cat="word" data-title="Word & Data Processing" data-uses="write edit format spellcheck" data-outputs="reports letters">
+        <span class="badge">1) Word & Data Processing ✍️</span>
+        <h3>Create & Format Documents</h3>
+        <p>Used to write and edit typed documents. Change fonts, sizes, colors, margins, add headers/footers, spell-check, and insert clip art.</p>
+        <div class="example">Examples: reports, essays, letters.</div>
+        <details class="more"><summary>More Info 🍪</summary>
+          <ul>
+            <li>Track changes & comments for collaboration</li>
+            <li>Styles for headings, lists, citations</li>
+            <li>Export to PDF; templates for resumes & reports</li>
+          </ul>
+        </details>
+        <div class="card-actions">
+          <button class="btn tip" data-tip="Word & Data: Use styles (H1, H2) so your table of contents and navigation auto-generate.">Cookie Tip</button>
+          <label class="tbtn"><input type="checkbox" class="cmp" data-id="word-data"> Compare</label>
+        </div>
+      </article>
+
+      <!-- 2 Spreadsheet -->
+      <article class="card" id="spreadsheet" data-cat="sheet" data-title="Spreadsheet" data-uses="formulas functions charts pivot tables" data-outputs="budgets gradebooks">
+        <span class="badge">2) Spreadsheet 📊</span>
+        <h3>Calculate & Organize Data</h3>
+        <p>Worksheets are grids of rows and columns. Cells hold numbers, text, formulas, or functions. Changes automatically recalculate related values.</p>
+        <div class="example">Examples: budgets, grades, attendance.</div>
+        <details class="more"><summary>More Info 🍪</summary>
+          <ul>
+            <li>Charts & conditional formatting for insights</li>
+            <li>Pivot tables for quick summaries</li>
+            <li>Data validation to reduce entry errors</li>
+          </ul>
+        </details>
+        <div class="card-actions">
+          <button class="btn tip" data-tip="Spreadsheet: Name ranges and use them in formulas for readable sheets.">Cookie Tip</button>
+          <label class="tbtn"><input type="checkbox" class="cmp" data-id="spreadsheet"> Compare</label>
+        </div>
+      </article>
+
+      <!-- 3 Presentation -->
+      <article class="card" id="presentation" data-cat="slides" data-title="Presentation" data-uses="slides speaker notes animations" data-outputs="slide decks">
+        <span class="badge">3) Presentation 🖥️</span>
+        <h3>Tell Stories with Slides</h3>
+        <p>Create sequences of words and pictures to support talks and lessons.</p>
+        <div class="example">Examples: slide decks for class or meetings.</div>
+        <details class="more"><summary>More Info 🍪</summary>
+          <ul>
+            <li>Master slides ensure consistent layout</li>
+            <li>Speaker notes & presenter view</li>
+            <li>Embed video and charts</li>
+          </ul>
+        </details>
+        <div class="card-actions">
+          <button class="btn tip" data-tip="Presentation: Aim for one idea per slide and large visuals.">Cookie Tip</button>
+          <label class="tbtn"><input type="checkbox" class="cmp" data-id="presentation"> Compare</label>
+        </div>
+      </article>
+
+      <!-- 4 Database -->
+      <article class="card" id="database" data-cat="db" data-title="Database" data-uses="tables queries forms relations validation" data-outputs="reports">
+        <span class="badge">4) Database 🗄️</span>
+        <h3>Store, Validate & Query Data</h3>
+        <p>Data lives in tables (rows & columns). Programs can validate inputs, apply rules, and generate queries and reports. Also called DBMS.</p>
+        <div class="example">Examples: library catalog, enrollment system.</div>
+        <details class="more"><summary>More Info 🍪</summary>
+          <ul>
+            <li>Relational links with primary/foreign keys</li>
+            <li>Forms to control input; reduce errors</li>
+            <li>SQL queries & report builders</li>
+          </ul>
+        </details>
+        <div class="card-actions">
+          <button class="btn tip" data-tip="Database: Sketch your schema (entities & relationships) before you build.">Cookie Tip</button>
+          <label class="tbtn"><input type="checkbox" class="cmp" data-id="database"> Compare</label>
+        </div>
+      </article>
+
+      <!-- 5 Graphics -->
+      <article class="card" id="graphics" data-cat="gfx" data-title="Graphic Design" data-uses="image editing vector raster layers" data-outputs="logos posters banners">
+        <span class="badge">5) Graphic Design 🎨</span>
+        <h3>Create & Edit 2D Images</h3>
+        <p>Make and manage clip art, web graphics, logos, titles, backgrounds, and media artwork.</p>
+        <div class="example">Examples: logo, banner, poster.</div>
+        <details class="more"><summary>More Info 🍪</summary>
+          <ul>
+            <li>Use layers & masks for non-destructive edits</li>
+            <li>Export presets for web vs. print</li>
+            <li>Vector (SVG) for crisp, scalable graphics</li>
+          </ul>
+        </details>
+        <div class="card-actions">
+          <button class="btn tip" data-tip="Graphics: Keep a brand palette and reuse components for consistency.">Cookie Tip</button>
+          <label class="tbtn"><input type="checkbox" class="cmp" data-id="graphics"> Compare</label>
+        </div>
+      </article>
+
+      <!-- 6 File Management -->
+      <article class="card" id="file-mgmt" data-cat="files" data-title="File Management" data-uses="organize rename move copy search backup" data-outputs="structured directories">
+        <span class="badge">6) File Management 🗂️</span>
+        <h3>Organize Your Files</h3>
+        <p>Manage individual or grouped files on a computer system: rename, move, copy, search.</p>
+        <div class="example">Examples: class folders, backups.</div>
+        <details class="more"><summary>More Info 🍪</summary>
+          <ul>
+            <li>Consistent naming: <code>YYYY-MM-DD_topic_v1</code></li>
+            <li>Use tags/metadata for fast search</li>
+            <li>Automate backups & versioning</li>
+          </ul>
+        </details>
+        <div class="card-actions">
+          <button class="btn tip" data-tip="Files: Agree on a folder schema with your team up front.">Cookie Tip</button>
+          <label class="tbtn"><input type="checkbox" class="cmp" data-id="file-mgmt"> Compare</label>
+        </div>
+      </article>
+
+      <!-- 7 Desktop Publishing -->
+      <article class="card" id="dtp" data-cat="dtp" data-title="Desktop Publishing" data-uses="layouts typography grids print bleed" data-outputs="brochures posters cards magazines">
+        <span class="badge">7) Desktop Publishing 📰</span>
+        <h3>Print-Ready Layouts</h3>
+        <p>Design visual communications like brochures, cards, posters, web pages for professional or personal printing.</p>
+        <div class="example">Examples: tri-fold brochure, magazine page.</div>
+        <details class="more"><summary>More Info 🍪</summary>
+          <ul>
+            <li>Baseline grids & margins for alignment</li>
+            <li>Master pages and paragraph styles</li>
+            <li>Export with bleed & crop marks</li>
+          </ul>
+        </details>
+        <div class="card-actions">
+          <button class="btn tip" data-tip="DTP: Use a 12-column grid; align everything—type loves order.">Cookie Tip</button>
+          <label class="tbtn"><input type="checkbox" class="cmp" data-id="dtp"> Compare</label>
+        </div>
+      </article>
+
+      <!-- 8 Organization -->
+      <article class="card" id="org" data-cat="org" data-title="Organization" data-uses="tasks notes kanban reminders calendars" data-outputs="schedules boards plans journals">
+        <span class="badge">8) Organization 🗓️</span>
+        <h3>Plan & Track Work</h3>
+        <p>Improve daily task performance with project boards, note-taking, journals, and planners.</p>
+        <div class="example">Examples: to-do list, class planner.</div>
+        <details class="more"><summary>More Info 🍪</summary>
+          <ul>
+            <li>Kanban boards or checklists</li>
+            <li>Recurring reminders & calendar sync</li>
+            <li>Templates for weekly reviews</li>
+          </ul>
+        </details>
+        <div class="card-actions">
+          <button class="btn tip" data-tip="Org: Time-block your day and protect deep-work windows.">Cookie Tip</button>
+          <label class="tbtn"><input type="checkbox" class="cmp" data-id="org"> Compare</label>
+        </div>
+      </article>
+
+      <!-- 9 Email -->
+      <article class="card" id="email" data-cat="mail" data-title="Email" data-uses="compose filter rules signatures templates" data-outputs="emails threads newsletters">
+        <span class="badge">9) Email ✉️</span>
+        <h3>Communicate by Mail</h3>
+        <p>Create, send, receive, and organize electronic mail (email) with folders, filters, and threads.</p>
+        <div class="example">Examples: announcements, parent contact.</div>
+        <details class="more"><summary>More Info 🍪</summary>
+          <ul>
+            <li>Rules & filters for automatic sorting</li>
+            <li>Templates for common replies</li>
+            <li>Schedule send & follow-up nudges</li>
+          </ul>
+        </details>
+        <div class="card-actions">
+          <button class="btn tip" data-tip="Email: Keep subjects action-oriented—e.g., “Action by Fri: Budget draft.”">Cookie Tip</button>
+          <label class="tbtn"><input type="checkbox" class="cmp" data-id="email"> Compare</label>
+        </div>
+      </article>
+    </section>
+
+    <!-- ===== Quick Quiz ===== -->
+    <section class="quiz" id="quiz" aria-labelledby="quiz-title">
+      <h3 id="quiz-title">Mini Productivity Quiz</h3>
+      <p style="margin-bottom:6px">Pick the best answer:</p>
+      <ol style="padding-left:18px">
+        <li style="margin-bottom:8px">
+          Which tool is best for calculating grades?
+          <label><input type="radio" name="q1" value="wrong"> Presentation</label>
+          <label><input type="radio" name="q1" value="correct"> Spreadsheet</label>
+        </li>
+        <li style="margin-bottom:8px">
+          You want print-ready brochures with bleed. Use…
+          <label><input type="radio" name="q2" value="wrong"> Word Processor</label>
+          <label><input type="radio" name="q2" value="correct"> Desktop Publishing</label>
+        </li>
+        <li style="margin-bottom:8px">
+          To filter emails into folders automatically, you set up…
+          <label><input type="radio" name="q3" value="correct"> Rules/Filters</label>
+          <label><input type="radio" name="q3" value="wrong"> Master Slides</label>
+        </li>
+      </ol>
+      <div id="quizResult" class="result" aria-live="polite"></div>
+    </section>
+
+  </main>
+
+  <footer>Made with 🍪 at Cookie Academy™</footer>
+
+  <!-- ===== Floating UI: Back to top ===== -->
+  <button id="toTop" class="fab" aria-label="Back to top">↑</button>
+
+  <!-- ===== Modals ===== -->
+  <div id="tipModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="tipTitle">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="tipTitle">Cookie Tip</h3>
+        <button class="close" data-close>Close</button>
+      </div>
+      <div id="tipBody"></div>
+    </div>
+  </div>
+
+  <div id="compareModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cmpTitle">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="cmpTitle">Compare Tools</h3>
+        <button class="close" data-close>Close</button>
+      </div>
+      <div id="cmpBody"></div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Preferences (dark mode & motion) =====
+    const body = document.body;
+    const toggleDark = document.getElementById('toggleDark');
+    const toggleMotion = document.getElementById('toggleMotion');
+
+    function applyPref(){
+      const dark = localStorage.getItem('cookie_dark') === '1';
+      const reduce = localStorage.getItem('cookie_reduce') === '1';
+      body.classList.toggle('dark', dark);
+      toggleDark.textContent = dark ? '☀️ Light Mode' : '🌙 Dark Mode';
+      toggleMotion.textContent = reduce ? '🎈 Enable Motion' : '🎈 Reduce Motion';
+      // enable/disable cookie float
+      if(reduce){
+        clearInterval(window.__cookieTimer);
+        document.querySelectorAll('.cookie').forEach(c=>c.remove());
+      }else{
+        if(!window.__cookieTimer){
+          window.__cookieTimer = setInterval(spawnCookie, 900);
+        }
+      }
+    }
+    toggleDark.addEventListener('click',()=>{
+      localStorage.setItem('cookie_dark', body.classList.contains('dark') ? '0' : '1');
+      applyPref();
+    });
+    toggleMotion.addEventListener('click',()=>{
+      const reduce = localStorage.getItem('cookie_reduce') === '1';
+      localStorage.setItem('cookie_reduce', reduce ? '0' : '1');
+      applyPref();
+    });
+    applyPref();
+
+    // ===== Scrollspy =====
+    const nav = document.getElementById('topnav');
+    const links = Array.from(nav.querySelectorAll('a'));
+    const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+    const spy = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        const idx = targets.indexOf(entry.target);
+        if(idx !== -1 && entry.isIntersecting){
+          links.forEach(l=>l.classList.remove('active'));
+          links[idx].classList.add('active');
+        }
+      });
+    },{rootMargin:'-40% 0px -55% 0px', threshold:0.01});
+    targets.forEach(t=>spy.observe(t));
+
+    // ===== Toggle table =====
+    document.getElementById('toggleTable').addEventListener('click', ()=>{
+      const wrap = document.getElementById('tableWrap');
+      wrap.style.display = (wrap.style.display === 'block') ? 'none' : 'block';
+    });
+
+    // ===== Live search & category filter =====
+    const search = document.getElementById('search');
+    const category = document.getElementById('category');
+    const clearFilters = document.getElementById('clearFilters');
+    const cards = Array.from(document.querySelectorAll('.card[data-cat]'));
+
+    function filterCards(){
+      const q = (search.value || '').toLowerCase().trim();
+      const cat = category.value;
+      cards.forEach(card=>{
+        const inCat = (cat === 'all') || (card.dataset.cat === cat);
+        const blob = (card.dataset.title + ' ' + card.dataset.uses + ' ' + card.dataset.outputs).toLowerCase();
+        const hit = !q || blob.includes(q);
+        card.style.display = (inCat && hit) ? '' : 'none';
+      });
+    }
+    search.addEventListener('input', filterCards);
+    category.addEventListener('change', filterCards);
+    clearFilters.addEventListener('click', ()=>{ search.value=''; category.value='all'; filterCards(); });
+    filterCards();
+
+    // ===== Cookie Tips modal =====
+    const tipModal = document.getElementById('tipModal');
+    const tipBody = document.getElementById('tipBody');
+    document.querySelectorAll('.btn.tip').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        tipBody.textContent = btn.dataset.tip || 'Be awesome!';
+        tipModal.classList.add('open');
+      });
+    });
+    document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click', ()=>{
+      b.closest('.modal').classList.remove('open');
+    }));
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open')); } });
+
+    // ===== Compare drawer (modal) =====
+    const compareModal = document.getElementById('compareModal');
+    const cmpBody = document.getElementById('cmpBody');
+    const cmpChecks = document.querySelectorAll('.cmp');
+
+    function buildCompare(){
+      const chosen = Array.from(cmpChecks).filter(c=>c.checked).slice(0,3).map(c=>c.dataset.id);
+      if(chosen.length === 0){
+        cmpBody.innerHTML = '<p>Pick up to three “Compare” boxes on the cards, then open again.</p>';
+        return;
+      }
+      const rows = chosen.map(id => {
+        const el = document.getElementById(id);
+        return {
+          title: el.dataset.title,
+          uses: el.dataset.uses,
+          outputs: el.dataset.outputs,
+          cat: el.dataset.cat
+        };
+      });
+      cmpBody.innerHTML = `
+        <div style="overflow:auto">
+          <table style="width:100%; border-collapse:collapse">
+            <thead>
+              <tr>
+                <th style="text-align:left; padding:6px; border-bottom:1px solid #ead7c8">Feature</th>
+                ${rows.map(r=>`<th style="text-align:left; padding:6px; border-bottom:1px solid #ead7c8">${r.title}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:6px">Category</td>${rows.map(r=>`<td style="padding:6px">${r.cat}</td>`).join('')}</tr>
+              <tr><td style="padding:6px">Best For</td>${rows.map(r=>`<td style="padding:6px">${r.uses}</td>`).join('')}</tr>
+              <tr><td style="padding:6px">Typical Outputs</td>${rows.map(r=>`<td style="padding:6px">${r.outputs}</td>`).join('')}</tr>
+            </tbody>
+          </table>
+        </div>`;
+    }
+
+    // Open compare when user checks any box (and picked at least 2)
+    cmpChecks.forEach(c=>c.addEventListener('change', ()=>{
+      const chosen = Array.from(cmpChecks).filter(x=>x.checked);
+      if(chosen.length > 3){
+        // enforce max 3
+        c.checked = false;
+        return alert('You can compare up to 3 tools.');
+      }
+      if(chosen.length >= 2){
+        buildCompare();
+        compareModal.classList.add('open');
+      }
+    }));
+
+    // ===== Quiz logic =====
+    const result = document.getElementById('quizResult');
+    document.querySelectorAll('#quiz input[type="radio"]').forEach(r=>{
+      r.addEventListener('change',()=>{
+        const q1 = document.querySelector('input[name="q1"]:checked')?.value;
+        const q2 = document.querySelector('input[name="q2"]:checked')?.value;
+        const q3 = document.querySelector('input[name="q3"]:checked')?.value;
+        if(!q1 || !q2 || !q3){ result.textContent = 'Answer all questions…'; result.className='result'; return; }
+        const score = [q1,q2,q3].filter(v=>v==='correct').length;
+        result.textContent = `You scored ${score}/3`;
+        result.className = 'result ' + (score===3 ? 'correct' : 'incorrect');
+        localStorage.setItem('cookie_quiz', String(score));
+      });
+    });
+    // show last score
+    const last = localStorage.getItem('cookie_quiz');
+    if(last) { result.textContent = `Last score on this device: ${last}/3`; }
+
+    /* ===== Back to top ===== */
+    const toTop = document.getElementById('toTop');
+    window.addEventListener('scroll', ()=>{
+      toTop.style.display = window.scrollY > 600 ? 'inline-flex' : 'none';
+    });
+    toTop.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+
+    /* ===== Floating cookies ===== */
+    function spawnCookie(){
+      const cookie = document.createElement('div');
+      cookie.classList.add('cookie');
+      cookie.style.left = Math.random()*100 + 'vw';
+      const size = Math.random()*40 + 30;
+      cookie.style.width = size + 'px';
+      cookie.style.height = size + 'px';
+      const duration = Math.random()*10 + 10;
+      cookie.style.animationDuration = duration + 's';
+      document.body.appendChild(cookie);
+      setTimeout(()=>cookie.remove(), duration*1000);
+    }
+    if(localStorage.getItem('cookie_reduce') !== '1'){
+      window.__cookieTimer = setInterval(spawnCookie, 900);
+    }
+
+  </script>
+</body>
+</html>
