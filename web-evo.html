@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-    <html lang="en">
+    <html lang="en" data-theme="light">
     <head>
     <meta charset="UTF-8" />
     <title>Web Evolution | Cookie Academy 🍪</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet" />
     <style>
-        
+        .quiz-question{color:black;}
+		.quiz-options{color:black;}
+		
+		
+		
         /* (Your existing styles here—the same as before) */
         :root {
         --cookie-orange: #d2691e;
@@ -17,7 +21,10 @@
         --cookie-bg: url('https://www.transparenttextures.com/patterns/cookies.png');
         --green: #4caf50;
         --red: #f44336;
+		--surface:#ffffff;
         }
+		
+		
 
         html {
         scroll-behavior: smooth;
@@ -81,12 +88,13 @@
         }
 
         .card {
-        background-color: white;
+        background-color: var(--surface);
         border-radius: 12px;
         padding: 25px 20px;
         margin-bottom: 25px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
+		
 
         .card h2 {
         color: var(--cookie-orange);
@@ -115,6 +123,7 @@
         border-left: 5px solid var(--cookie-orange);
         margin-top: 15px;
         font-family: monospace;
+		color:black;
         }
 
         footer {
@@ -267,7 +276,7 @@
         .timeline-step small {
         font-weight: 400;
         margin-top: 5px;
-        color: var(--cookie-text);
+        color: black;
         font-size: 12px;
         }
 
@@ -336,7 +345,7 @@
         .stats-container {
         display: flex;
         justify-content: space-around;
-        background: white;
+        background: var(--surface);
         padding: 25px 20px;
         border-radius: 12px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.05);
@@ -372,6 +381,18 @@
     opacity: 0.5;
     pointer-events: none;
 }
+.btn-ghost{
+  background:transparent; color:var(--cookie-orange); border:2px solid white;
+  border-radius:10px; padding:8px 12px; font-weight:700; cursor:pointer;
+}
+
+[data-theme="dark"]{
+  --cookie-light:#2a1e17;
+  --cookie-cream:#3a2a20;
+  --cookie-text:#f5e9e0;
+  --surface:#2b221b;
+  --shadow: 0 6px 16px rgba(0,0,0,.35);
+}
     </style>
     </head>
     <body>
@@ -380,6 +401,7 @@
     <header>
         <h1>🍪 Web Evolution</h1>
         <p>From Static to Semantic</p>
+		<button class="btn-ghost" id="themeToggle" title="Toggle theme">🌞 / 🌙</button>
     </header>
 
     <!-- Navigation -->
@@ -583,7 +605,26 @@
     </div> <!-- end main-content -->
 
     <script>
-        // Toggle Table/List View
+	  const root = document.documentElement; // <html> element
+  const themeToggle = document.getElementById('themeToggle');
+
+  // Restore saved theme on page load
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    root.setAttribute('data-theme', savedTheme);
+  }
+
+  // Toggle theme on button click
+  themeToggle.addEventListener('click', () => {
+    const isDark = root.getAttribute('data-theme') === 'dark';
+    const newTheme = isDark ? 'light' : 'dark';
+    root.setAttribute('data-theme', newTheme);  // switches CSS
+    localStorage.setItem('theme', newTheme);    // save preference
+  });
+
+   
+		
+		// Toggle Table/List View
         function toggleView() {
         const table = document.getElementById('comparisonTable');
         const cards = document.getElementById('cardView');
@@ -691,6 +732,8 @@
 
 // Spawn a cookie every 500ms
 setInterval(spawnCookie, 500);
+
+
     </script>
     </body>
     </html>
