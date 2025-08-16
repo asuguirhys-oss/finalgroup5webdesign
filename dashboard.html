@@ -169,10 +169,6 @@
       background: #e8f5e9;
       color: #2e7d32;
     }
-    .activity-feed .quiz {
-      background: #fff3e0;
-      color: #ef6c00;
-    }
   </style>
 </head>
 <body>
@@ -211,11 +207,6 @@
     </div>
 
     <div class="card">
-      <h2>📝 Quizzes</h2>
-      <ul class="status-list" id="quizList"></ul>
-    </div>
-
-    <div class="card">
       <h2>⚡ Activity Feed</h2>
       <div class="activity-feed" id="activityFeed"></div>
     </div>
@@ -229,22 +220,14 @@
       "Web Design",
       "Web Evolution"
     ];
-    const quizzes = [
-      "Boolean Operators Test",
-      "Online Tools Test",
-      "Web Design Test",
-      "Web Evolution Test"
-    ];
 
     function loadDashboard() {
-      let totalItems = lessons.length + quizzes.length;
+      let totalItems = lessons.length;
       let completedItems = 0;
 
       const lessonList = document.getElementById("lessonList");
-      const quizList = document.getElementById("quizList");
       const activityFeed = document.getElementById("activityFeed");
       lessonList.innerHTML = "";
-      quizList.innerHTML = "";
       activityFeed.innerHTML = "";
 
       // Lessons
@@ -261,23 +244,6 @@
           entry.classList.add("lesson");
           activityFeed.appendChild(entry);
         }
-      });
-
-      // Quizzes
-      quizzes.forEach(quiz => {
-        let score = localStorage.getItem("score-" + quiz);
-        let li = document.createElement("li");
-        if (score) {
-          completedItems++;
-          li.innerHTML = `🎯 ${quiz}: <span class="done">${score}</span>`;
-          let entry = document.createElement("div");
-          entry.textContent = "🎯 Scored " + score + " on " + quiz;
-          entry.classList.add("quiz");
-          activityFeed.appendChild(entry);
-        } else {
-          li.innerHTML = `❌ ${quiz}: <span class="notdone">Not taken yet</span>`;
-        }
-        quizList.appendChild(li);
       });
 
       // Progress
