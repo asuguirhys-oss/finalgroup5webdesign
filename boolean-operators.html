@@ -426,12 +426,18 @@
         </div>
       </section>
 <button class="btn-ghost" id="readAllBtn" title="Read all text">🔊 Read All</button>
-
+<br>
+		<button class="btn" onclick="markLessonComplete('Boolean Operator')">✅ Mark Lesson Complete</button>
   <footer>
     Made with 🍪 at Cookie Academy™
   </footer>
 
   <script>
+	  function markLessonComplete(lessonName) {
+  localStorage.setItem('lesson-' + lessonName, 'true');
+  alert(lessonName + " marked as complete!");
+}
+
   function checkBoolean() {
   const input = document.getElementById("userInput").value.trim();
   if (!input) {
@@ -506,5 +512,6 @@ document.getElementById("readAllBtn").addEventListener("click", speakAll);
   </script>
 </body>
 </html>
+
 
 
