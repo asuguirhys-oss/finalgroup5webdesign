@@ -421,6 +421,8 @@ footer{
 <!-- FAB -->
 <div class="fab">
   <button class="btn" id="toTop" title="Back to top">⬆️</button>
+  <button class="btn-ghost" id="readAllBtn" title="Read all text">🔊 Read All</button>
+
 </div>
 
 <footer>Made with 🍪 at Cookie Academy™</footer>
@@ -655,9 +657,19 @@ function spawnCookie(){
   setTimeout(()=>cookie.remove(),20000);
 }
 setInterval(spawnCookie, 800);
+function speakAll() {
+  let text = document.body.innerText; // grabs all text from page
+  let utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+  window.speechSynthesis.cancel(); // stop previous speech
+  window.speechSynthesis.speak(utterance);
+}
 
+// ✅ Hook button to function
+document.getElementById("readAllBtn").addEventListener("click", speakAll);
 /* ===== Restore opened/progress initially ===== */
 updateProgress();
 </script>
 </body>
 </html>
+
