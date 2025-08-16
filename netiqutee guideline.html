@@ -371,11 +371,20 @@
     </section>
   </div>
 <button class="btn-ghost" id="readAllBtn" title="Read all text">🔊 Read All</button>
+	                <button class="btn" onclick="markLessonComplete('Netiquette Guidelines')">✅ Mark Lesson Complete</button>
+
   <footer>
     Made with 🍪 at Cookie Academy™
   </footer>
 
   <script>
+	  
+function markLessonComplete(lessonName) {
+  localStorage.setItem('lesson-' + lessonName, 'true');
+  alert(lessonName + " marked as complete!");
+}
+
+
     (function () {
       /* ---------- Progress tracker with persistence ---------- */
       const RULES_KEY = 'netiquette_rules_opened_v1';
@@ -574,4 +583,5 @@ document.getElementById("readAllBtn").addEventListener("click", speakAll);
   </script>
 </body>
 </html>
+
 
