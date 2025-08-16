@@ -600,6 +600,8 @@
             <div class="stat-label">DApps in Web 3.0</div>
 <BR>
 				<button class="btn-ghost" id="readAllBtn" title="Read all text">🔊 Read All</button>
+				                <button class="btn" onclick="markLessonComplete('Web Evolution')">✅ Mark Lesson Complete</button>
+
             </div>
         </section>
 
@@ -607,6 +609,11 @@
     </div> <!-- end main-content -->
 
     <script>
+		function markLessonComplete(lessonName) {
+  localStorage.setItem('lesson-' + lessonName, 'true');
+  alert(lessonName + " marked as complete!");
+}
+
 	  const root = document.documentElement; // <html> element
   const themeToggle = document.getElementById('themeToggle');
 
@@ -748,4 +755,5 @@ document.getElementById("readAllBtn").addEventListener("click", speakAll);
     </script>
     </body>
     </html>
+
 
