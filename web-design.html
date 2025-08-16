@@ -422,12 +422,18 @@ footer{
 <div class="fab">
   <button class="btn" id="toTop" title="Back to top">⬆️</button>
   <button class="btn-ghost" id="readAllBtn" title="Read all text">🔊 Read All</button>
+                <button class="btn" onclick="markLessonComplete('Web Design')">✅ Mark Lesson Complete</button>
 
 </div>
 
 <footer>Made with 🍪 at Cookie Academy™</footer>
 
 <script>
+  function markLessonComplete(lessonName) {
+  localStorage.setItem('lesson-' + lessonName, 'true');
+  alert(lessonName + " marked as complete!");
+}
+
 /* ===== Helpers ===== */
 const $ = (sel, ctx=document) => ctx.querySelector(sel);
 const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
@@ -672,4 +678,5 @@ updateProgress();
 </script>
 </body>
 </html>
+
 
