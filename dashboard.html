@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🍪 Cookie Academy Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      display: flex;
+      height: 100vh;
+      background: #fdf3e7;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: linear-gradient(180deg, #4b2e23, #6e4b33);
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .sidebar h2 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+    .sidebar .avatar {
+      width: 80px;
+      height: 80px;
+      background: #fff;
+      border-radius: 50%;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #6e4b33;
+      font-weight: bold;
+    }
+    .user-info {
+      margin: 10px 0 30px;
+      background: rgba(255,255,255,0.1);
+      padding: 12px;
+      border-radius: 10px;
+      width: 100%;
+    }
+    .user-info h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+    .user-info p {
+      margin: 4px 0 0;
+      font-size: 0.9rem;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin-top: auto;
+      width: 100%;
+    }
+    .sidebar ul li {
+      margin: 12px 0;
+    }
+    .sidebar ul li a {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s, padding-left 0.3s;
+    }
+    .sidebar ul li a:hover {
+      background: rgba(255,255,255,0.15);
+      padding-left: 18px;
+    }
+
+    .logout-btn {
+      margin-top: 20px;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      background: #b55a1f;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      transition: background 0.3s;
+    }
+    .logout-btn:hover {
+      background: #d97a40;
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .card {
+      background: rgba(255,255,255,0.85);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      backdrop-filter: blur(6px);
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+    }
+    h1 {
+      margin-top: 0;
+      color: #5a3d2b;
+    }
+    h2 {
+      color: #6e4b33;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Progress */
+    .progress-container {
+      background: #ddd;
+      border-radius: 20px;
+      height: 22px;
+      width: 100%;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 22px;
+      border-radius: 20px;
+      background: linear-gradient(90deg, #b55a1f, #ffd28f);
+      width: 0%;
+      transition: width 1s ease;
+    }
+
+    /* Lists */
+    ul.status-list {
+      list-style: none;
+      padding: 0;
+    }
+    ul.status-list li {
+      margin: 8px 0;
+      font-size: 0.95rem;
+    }
+    .done { color: green; font-weight: bold; }
+    .notdone { color: red; font-weight: bold; }
+
+    /* Activity Feed */
+    .activity-feed {
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 0.9rem;
+    }
+    .activity-feed div {
+      margin-bottom: 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+    .activity-feed .lesson {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    .activity-feed .quiz {
+      background: #fff3e0;
+      color: #ef6c00;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>🍪 Cookie Academy</h2>
+    <div class="avatar">👤</div>
+
+    <div class="user-info">
+      <h3 id="sidebarName">Guest</h3>
+      <p id="sidebarSection">Guest user</p>
+    </div>
+
+    <ul>
+      <li><a href="FIRST.html">🏠 Home</a></li>
+      <li><a href="dashboard.html">📊 Dashboard</a></li>
+    </ul>
+    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h1>📊 Student Dashboard</h1>
+
+    <div class="card">
+      <h2>📈 Overall Progress</h2>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <p id="progressText">0% complete</p>
+    </div>
+
+    <div class="card">
+      <h2>📘 Lessons</h2>
+      <ul class="status-list" id="lessonList"></ul>
+    </div>
+
+    <div class="card">
+      <h2>📝 Quizzes</h2>
+      <ul class="status-list" id="quizList"></ul>
+    </div>
+
+    <div class="card">
+      <h2>⚡ Activity Feed</h2>
+      <div class="activity-feed" id="activityFeed"></div>
+    </div>
+  </div>
+
+  <script>
+    const lessons = [
+      "Boolean Operators",
+      "Netiquette Guideline",
+      "Productivity Tools",
+      "Web Design",
+      "Web Evolution"
+    ];
+    const quizzes = [
+      "Boolean Operators Test",
+      "Online Tools Test",
+      "Web Design Test",
+      "Web Evolution Test"
+    ];
+
+    function loadDashboard() {
+      let totalItems = lessons.length + quizzes.length;
+      let completedItems = 0;
+
+      const lessonList = document.getElementById("lessonList");
+      const quizList = document.getElementById("quizList");
+      const activityFeed = document.getElementById("activityFeed");
+      lessonList.innerHTML = "";
+      quizList.innerHTML = "";
+      activityFeed.innerHTML = "";
+
+      // Lessons
+      lessons.forEach(lesson => {
+        let done = localStorage.getItem("lesson-" + lesson) === "true";
+        if (done) completedItems++;
+        let li = document.createElement("li");
+        li.innerHTML = done ? `✅ ${lesson} <span class="done">Done</span>` : `❌ ${lesson} <span class="notdone">Not done</span>`;
+        lessonList.appendChild(li);
+
+        if (done) {
+          let entry = document.createElement("div");
+          entry.textContent = "✅ Completed Lesson: " + lesson;
+          entry.classList.add("lesson");
+          activityFeed.appendChild(entry);
+        }
+      });
+
+      // Quizzes
+      quizzes.forEach(quiz => {
+        let score = localStorage.getItem("score-" + quiz);
+        let li = document.createElement("li");
+        if (score) {
+          completedItems++;
+          li.innerHTML = `🎯 ${quiz}: <span class="done">${score}</span>`;
+          let entry = document.createElement("div");
+          entry.textContent = "🎯 Scored " + score + " on " + quiz;
+          entry.classList.add("quiz");
+          activityFeed.appendChild(entry);
+        } else {
+          li.innerHTML = `❌ ${quiz}: <span class="notdone">Not taken yet</span>`;
+        }
+        quizList.appendChild(li);
+      });
+
+      // Progress
+      let percent = Math.round((completedItems / totalItems) * 100);
+      document.getElementById("progressBar").style.width = percent + "%";
+      document.getElementById("progressText").textContent = percent + "% complete";
+    }
+
+    // ✅ Load user info from login
+    document.addEventListener("DOMContentLoaded", () => {
+      const name = localStorage.getItem("userName") || "Guest";
+      const section = localStorage.getItem("userSection") || "N/A";
+      const grade = localStorage.getItem("userGrade") || "";
+      const userType = localStorage.getItem("userType") || "";
+
+      document.getElementById("sidebarName").textContent = name;
+      if (userType === "student") {
+        document.getElementById("sidebarSection").textContent = "Section " + section + " (Grade " + grade + ")";
+      } else if (userType === "teacher") {
+        document.getElementById("sidebarSection").textContent = "Dept: " + section;
+      } else {
+        document.getElementById("sidebarSection").textContent = "Guest user";
+      }
+
+      loadDashboard();
+    });
+
+    // ✅ Logout clears localStorage and returns to login
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
