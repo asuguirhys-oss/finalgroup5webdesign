@@ -370,7 +370,7 @@
       </div>
     </section>
   </div>
-
+<button class="btn-ghost" id="readAllBtn" title="Read all text">🔊 Read All</button>
   <footer>
     Made with 🍪 at Cookie Academy™
   </footer>
@@ -560,6 +560,18 @@
       }
       document.getElementById('analyzeBtn')?.addEventListener('click', analyzeTone);
     })();
+    
+    function speakAll() {
+  let text = document.body.innerText; // grabs all text from page
+  let utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+  window.speechSynthesis.cancel(); // stop previous speech
+  window.speechSynthesis.speak(utterance);
+}
+
+// ✅ Hook button to function
+document.getElementById("readAllBtn").addEventListener("click", speakAll);
   </script>
 </body>
 </html>
+
