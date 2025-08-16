@@ -458,6 +458,9 @@
         </li>
       </ol>
       <div id="quizResult" class="result" aria-live="polite"></div>
+
+    <button class="btn-ghost" id="readAllBtn" title="Read all text">🔊 Read All</button>
+
     </section>
 
   </main>
@@ -671,7 +674,17 @@
     if(localStorage.getItem('cookie_reduce') !== '1'){
       window.__cookieTimer = setInterval(spawnCookie, 900);
     }
+function speakAll() {
+  let text = document.body.innerText; // grabs all text from page
+  let utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+  window.speechSynthesis.cancel(); // stop previous speech
+  window.speechSynthesis.speak(utterance);
+}
 
+// ✅ Hook button to function
+document.getElementById("readAllBtn").addEventListener("click", speakAll);
   </script>
 </body>
 </html>
+
