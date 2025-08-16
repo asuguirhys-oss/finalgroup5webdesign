@@ -1,158 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Cookie Academy</title>
-<link rel="stylesheet" href="style.css" />
-<script defer src="script.js"></script>
-<style>
-  header {
-    background:#b55a1f; 
-    color:#fff; 
-    padding:12px 20px; 
-    display:flex; 
-    justify-content:space-between; 
-    align-items:center; 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  .site-title {
-    max-width: 65%;
-  }
-  .site-title h1 {
-    margin: 0;
-    font-size: 1.5rem;
-  }
-  .site-title p {
-    margin: 4px 0 0 0;
-    font-size: 0.9rem;
-  }
-  .top-controls {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    color: #fff;
-    font-weight: 600;
-  }
-  #darkModeToggle {
-    background:none; 
-    border:none; 
-    cursor:pointer; 
-    font-size:1.2rem; 
-    color:#fff;
-  }
-  #avatar-select {
-    padding: 4px 8px;
-    border-radius: 6px;
-    border: none;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  #avatar-display {
-    font-size: 1.6rem;
-    margin-left: 8px;
-  }
-  /* Modal styling */
-  .modal {
-    display: none; /* Hidden by default */
-    position: fixed;
-    z-index: 1000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-  }
-  .modal-content.certificate {
-    background-color: #fefefe;
-    margin: 10% auto;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  .modal-content button {
-    margin: 10px 5px 0 5px;
-    padding: 8px 15px;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 6px;
-    border: none;
-    background-color: #b55a1f;
-    color: white;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cookie Academy 🍪</title>
+  <style>
+    :root {
+      --cookie-orange: #b55a1f;
+      --cookie-light: #fff8f2;
+      --cookie-dark: #2c1c13;
+      --cookie-text: #3d2b1f;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--cookie-light);
+      color: var(--cookie-text);
+      line-height: 1.6;
+    }
+
+    [data-theme="dark"] body {
+      background: var(--cookie-dark);
+      color: #f5e9e0;
+    }
+
+    header {
+      background: var(--cookie-orange);
+      color: #fff;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .site-title {
+      max-width: 65%;
+    }
+
+    .site-title h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .site-title p {
+      margin: 4px 0 0;
+      font-size: 0.9rem;
+    }
+
+    .top-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button, select {
+      cursor: pointer;
+    }
+
+    nav {
+      background: #8b3f13;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    nav a, nav button {
+      color: #fff;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    nav a:focus, nav button:focus {
+      outline: 2px dashed yellow;
+      outline-offset: 3px;
+    }
+
+    main {
+      padding: 20px;
+      min-height: 60vh;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #ffe8d4;
+      font-size: 14px;
+    }
+
+    /* Floating cookies */
+    .cookie {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      background-image: url('https://cookieclicker.wiki.gg/images/thumb/5/5a/PerfectCookie.png/210px-PerfectCookie.png');
+      background-size: cover;
+      animation: floatCookies linear infinite;
+      z-index: -1;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    @keyframes floatCookies {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.5; }
+      100% { transform: translateY(-120px) rotate(360deg); opacity: 0; }
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .modal-content button {
+      margin: 10px 5px 0;
+      padding: 8px 15px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      background: var(--cookie-orange);
+      color: white;
+    }
+
+    /* Accessibility skip link */
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 10px;
+      padding: 5px;
+      background: yellow;
+      color: black;
+      z-index: 10000;
+    }
+  </style>
 </head>
 <body>
+<a href="#content" class="skip-link">Skip to main content</a>
 
-<header class="header-container">
-  <div class="header-main">
-    <h1>🍪 <strong>Cookie Academy</strong> 🍪</h1>
-    <p>Learn, bake, and hone your skills — test your knowledge one sweet bite at a time!</p>
+<header>
+  <div class="site-title">
+    <h1>🍪 Cookie Academy</h1>
+    <p>Learn, bake, and test your knowledge — the sweet way!</p>
   </div>
-
-  <div class="header-welcome">
-    🌙 Welcome, <strong id="welcomeName">Guest</strong> 🎂
+  <div class="top-controls">
+    <button id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+    <select id="avatar-select" aria-label="Choose your avatar">
+      <option>👩‍🍳</option>
+      <option>🧑‍🍳</option>
+      <option>🍪</option>
+    </select>
+    <span id="avatar-display">👩‍🍳</span>
+    <button id="readAllBtn" title="Read page aloud">🔊</button>
   </div>
-  
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const welcomeName = document.getElementById('welcomeName');
-    const storedName = localStorage.getItem('userName');
-  
-    if (storedName && storedName.trim() !== '') {
-      welcomeName.textContent = storedName;
-    } else {
-      welcomeName.textContent = 'Guest';
-    }
-  
-    // Your other existing DOMContentLoaded code below...
-  });
-  </script>
 </header>
 
-<!-- Floating Cookies -->
-<div class="cookie" style="left:10%; animation-delay:0s;"></div>
-<div class="cookie" style="left:30%; animation-delay:5s;"></div>
-<div class="cookie" style="left:50%; animation-delay:10s;"></div>
-<div class="cookie" style="left:70%; animation-delay:15s;"></div>
-<div class="cookie" style="left:90%; animation-delay:7s;"></div>
+<!-- Floating cookies -->
+<div class="cookie" style="left:10%; animation-duration:15s;"></div>
+<div class="cookie" style="left:40%; animation-duration:20s;"></div>
+<div class="cookie" style="left:70%; animation-duration:25s;"></div>
 
-<nav>
+<nav role="navigation">
   <button onclick="showSection('lessons')">Lessons</button>
   <button onclick="showSection('tests')">Practice Tests</button>
+  <button onclick="openCert()">Certificate</button>
 </nav>
 
-<main id="content"></main>
+<main id="content" tabindex="-1">
+  <h2>Welcome to Cookie Academy!</h2>
+  <p>Choose a section above to begin your sweet learning journey.</p>
+</main>
 
-<div id="certificateModal" class="modal">
-  <div class="modal-content certificate">
-    <h2>🍪 Certificate of Achievement 🍪</h2>
+<footer>
+  <p>&copy; 2025 Cookie Academy 🍪 — Making learning delicious.</p>
+</footer>
+
+<!-- Certificate Modal -->
+<div id="certificateModal" class="modal" role="dialog" aria-labelledby="certTitle">
+  <div class="modal-content">
+    <h2 id="certTitle">🍪 Certificate of Achievement 🍪</h2>
     <p>This certifies that</p>
     <h3 id="certName">[User Name]</h3>
     <p>has completed the</p>
     <h3 id="certCourse">[Course Name]</h3>
-    <h3 id="certScore" style="margin: 10px 0; color: #b55a1f;"></h3>  <!-- ADDED -->
+    <h3 id="certScore"></h3>
     <p>Earned on <span id="certDate"></span></p>
-    <button id="downloadCertBtn">Download Certificate</button>
+    <button id="downloadCertBtn">Download</button>
     <button id="closeCertBtn">Close</button>
   </div>
 </div>
-<!-- Load html2canvas properly -->
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  // Close button hides modal
+  // Dark mode toggle
+  const root = document.documentElement;
+  const darkBtn = document.getElementById('darkModeToggle');
+  darkBtn.addEventListener('click', () => {
+    const dark = root.getAttribute('data-theme') === 'dark';
+    root.setAttribute('data-theme', dark ? 'light' : 'dark');
+  });
+
+  // Avatar
+  const avatarSelect = document.getElementById('avatar-select');
+  const avatarDisplay = document.getElementById('avatar-display');
+  avatarSelect.addEventListener('change', e => {
+    avatarDisplay.textContent = e.target.value;
+    localStorage.setItem('avatar', e.target.value);
+  });
+  if (localStorage.getItem('avatar')) {
+    avatarDisplay.textContent = localStorage.getItem('avatar');
+  }
+
+  // Section switch
+  function showSection(name) {
+    const main = document.getElementById('content');
+    if (name === 'lessons') {
+      main.innerHTML = "<h2>📘 Lessons</h2><p>Here are your lessons about Boolean Operators...</p>";
+    } else if (name === 'tests') {
+      main.innerHTML = "<h2>📝 Practice Tests</h2><p>Try solving exercises to test your sweet knowledge!</p>";
+    }
+    main.focus();
+  }
+
+  // Modal
+  function openCert() {
+    document.getElementById('certName').textContent = localStorage.getItem('userName') || 'Guest';
+    document.getElementById('certCourse').textContent = 'Boolean Operators';
+    document.getElementById('certScore').textContent = 'Score: 95%';
+    document.getElementById('certDate').textContent = new Date().toLocaleDateString();
+    document.getElementById('certificateModal').style.display = 'block';
+  }
   document.getElementById('closeCertBtn').addEventListener('click', () => {
     document.getElementById('certificateModal').style.display = 'none';
   });
-
-  // Download button triggers html2canvas
   document.getElementById('downloadCertBtn').addEventListener('click', () => {
-    const certificate = document.querySelector('.modal-content.certificate');
-    html2canvas(certificate).then(canvas => {
+    html2canvas(document.querySelector('.modal-content')).then(canvas => {
       const link = document.createElement('a');
       link.download = 'cookie-certificate.png';
       link.href = canvas.toDataURL();
@@ -160,25 +269,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Example: Show modal on page load for testing
-  // Remove/comment this in production
-  //document.getElementById('certificateModal').style.display = 'block';
-
-  // Avatar code (assuming avatar-select exists in your page)
-  const avatarDisplay = document.getElementById('avatar-display');
-  const avatarSelect = document.getElementById('avatar-select');
-
-  function saveAvatar(value) {
-    if(avatarDisplay) avatarDisplay.textContent = value;
-    // localStorage.setItem('selectedAvatar', value);
-  }
-
-  if (avatarSelect) {
-    avatarSelect.addEventListener('change', e => saveAvatar(e.target.value));
-    saveAvatar(avatarSelect.value);
-  }
-});
+  // TTS (Read All)
+  let speech;
+  document.getElementById('readAllBtn').addEventListener('click', () => {
+    if (speech && speechSynthesis.speaking) {
+      speechSynthesis.cancel();
+      return;
+    }
+    speech = new SpeechSynthesisUtterance(document.body.innerText);
+    speech.lang = "en-US";
+    speechSynthesis.speak(speech);
+  });
 </script>
-
 </body>
 </html>
+
