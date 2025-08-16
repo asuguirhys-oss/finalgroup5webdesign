@@ -425,6 +425,7 @@
           <div class="venn-label" id="venn-label">Select an operator</div>
         </div>
       </section>
+<button class="btn-ghost" id="readAllBtn" title="Read all text">🔊 Read All</button>
 
   <footer>
     Made with 🍪 at Cookie Academy™
@@ -492,7 +493,18 @@ function spawnCookie() {
 }
 
 setInterval(spawnCookie, 500);
+	  function speakAll() {
+  let text = document.body.innerText; // grabs all text from page
+  let utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+  window.speechSynthesis.cancel(); // stop previous speech
+  window.speechSynthesis.speak(utterance);
+}
+
+// ✅ Hook button to function
+document.getElementById("readAllBtn").addEventListener("click", speakAll);
   </script>
 </body>
 </html>
+
 
