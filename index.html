@@ -80,7 +80,7 @@
                 teacherFields.style.display = 'none';
     
                 document.getElementById("studentName").required = true;
-                document.getElementById("lrn").required = true;
+                document.getElementById("section").required = true;
                 document.getElementById("gradeLevel").required = true;
                 document.getElementById("teacherName").required = false;
                 document.getElementById("teacherId").required = false;
@@ -90,7 +90,7 @@
                 teacherFields.style.display = 'block';
     
                 document.getElementById("studentName").required = false;
-                document.getElementById("lrn").required = false;
+                document.getElementById("section").required = false;
                 document.getElementById("gradeLevel").required = false;
                 document.getElementById("teacherName").required = true;
                 document.getElementById("teacherId").required = true;
@@ -110,7 +110,7 @@
             let formData = {
                 userType,
                 name: userType === "student" ? document.getElementById("studentName").value.trim() : document.getElementById("teacherName").value.trim(),
-                lrn: userType === "student" ? document.getElementById("lrn").value.trim() : null,
+                section: userType === "student" ? document.getElementById("section").value.trim() : null,
                 gradeLevel: userType === "student" ? document.getElementById("gradeLevel").value : null,
                 teacherId: userType === "teacher" ? document.getElementById("teacherId").value.trim() : null,
                 department: userType === "teacher" ? document.getElementById("department").value : null,
@@ -131,12 +131,68 @@
                 localStorage.setItem("userName", formData.name);
     
                 alert("Data saved successfully!");
-                window.location.href = "FIRST.html";  // or index.html, depending on your actual homepage file name
+                window.location.href = "dashboard.html";  // or index.html, depending on your actual homepage file name
             } catch (error) {
                 console.error("Error:", error);
                 alert("Failed to save data.");
             }
         }
+        async function submitForm(event) {
+    event.preventDefault();
+
+    let userType = document.querySelector('input[name="userType"]:checked')?.value;
+    if (!userType) {
+        alert("Please select user type.");
+        return;
+    }
+
+    let formData = {
+        userType,
+        name: userType === "student" ? document.getElementById("studentName").value.trim() : document.getElementById("teacherName").value.trim(),
+        section: userType === "student" ? document.getElementById("section").value.trim() : null,
+        gradeLevel: userType === "student" ? document.getElementById("gradeLevel").value : null,
+        teacherId: userType === "teacher" ? document.getElementById("teacherId").value.trim() : null,
+        department: userType === "teacher" ? document.getElementById("department").value : null,
+    };
+
+    let firebaseURL = "https://login2-190b9-default-rtdb.firebaseio.com/users.json";
+
+    try {
+        let response = await fetch(firebaseURL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+        });
+
+        let result = await response.json();
+
+        // ✅ Save user info to localStorage
+        localStorage.setItem("userType", formData.userType);
+        localStorage.setItem("userName", formData.name);
+
+        if (formData.userType === "student") {
+            localStorage.setItem("userSection", formData.section);
+            localStorage.setItem("userGrade", formData.gradeLevel);
+        } else {
+            localStorage.setItem("userSection", formData.department);
+        }
+
+        alert("Data saved successfully!");
+        window.location.href = "dashboard.html";  
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to save data.");
+    }
+}
+
+function continueAsGuest() {
+    localStorage.setItem("userType", "guest");
+    localStorage.setItem("userName", "Guest");
+    localStorage.setItem("userSection", "Guest user");
+    localStorage.setItem("userGrade", "");
+    alert("Continuing as Guest...");
+    window.location.href = "dashboard.html"; 
+}
         <!-- ✅ Place this outside the form to avoid required field errors -->
  
   
@@ -144,7 +200,7 @@
     function continueAsGuest() {
       localStorage.setItem("userName", "Guest");
       alert("Continuing as Guest...");
-      window.location.href = "FIRST.html"; // ✅ Make sure FIRST.html is in the same folder
+      window.location.href = "dashboard.html"; // ✅ Make sure FIRST.html is in the same folder
     }
   </script>
   
@@ -171,8 +227,8 @@
                     <input type="text" id="studentName" name="studentName" required>
                 </div>
                 <div class="form-group">
-                    <label for="lrn">LRN:</label>
-                    <input type="text" id="lrn" name="lrn" required>
+                    <label for="section">Section:</label>
+                    <input type="text" id="section" name="section" required>
                 </div>
                 <div class="form-group">
                     <label for="gradeLevel">Grade Level:</label>
