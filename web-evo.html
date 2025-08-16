@@ -598,6 +598,8 @@
             <div class="stat">
             <div class="stat-number" data-target="100000000">0</div>
             <div class="stat-label">DApps in Web 3.0</div>
+<BR>
+				<button class="btn-ghost" id="readAllBtn" title="Read all text">🔊 Read All</button>
             </div>
         </section>
 
@@ -732,8 +734,18 @@
 
 // Spawn a cookie every 500ms
 setInterval(spawnCookie, 500);
+function speakAll() {
+  let text = document.body.innerText; // grabs all text from page
+  let utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+  window.speechSynthesis.cancel(); // stop previous speech
+  window.speechSynthesis.speak(utterance);
+}
 
+// ✅ Hook button to function
+document.getElementById("readAllBtn").addEventListener("click", speakAll);
 
     </script>
     </body>
     </html>
+
